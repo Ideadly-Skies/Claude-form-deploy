@@ -1,795 +1,434 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mammowa Prospect Pipeline</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mammobus Prospect Pipeline</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#4B2D83;--pd:#3a2268;--pm:#6B4DA0;--pl:#8E6DBF;
+  --lav:#E8E0F5;--lav2:#F4F0FA;--w:#fff;
+  --tx:#2D1A50;--txm:#5a4a7a;--txl:#9080b0;
+  --br:#D5C8ED;--bg:#F7F4FD;
+}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--tx);font-size:13px}
+header{background:var(--p);padding:0 20px;display:flex;align-items:stretch;justify-content:space-between;flex-wrap:wrap}
+.hleft{display:flex;align-items:center;gap:14px;padding:12px 0}
+.logo-icon{width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-text h1{font-size:15px;font-weight:700;color:#fff;line-height:1.2}
+.logo-text p{font-size:10px;color:rgba(255,255,255,.6)}
+.hdiv{width:1px;background:rgba(255,255,255,.2);margin:10px 0}
+.hsub{padding-left:14px}.hsub span{font-size:12px;color:rgba(255,255,255,.85);font-weight:600;display:block}
+.hsub small{font-size:10px;color:rgba(255,255,255,.5)}
+.toolbar{display:flex;gap:8px;align-items:center;padding:12px 0}
+.toolbar input{border:1px solid rgba(255,255,255,.3);border-radius:4px;padding:6px 10px;font-size:12px;width:190px;background:rgba(255,255,255,.12);color:#fff}
+.toolbar input::placeholder{color:rgba(255,255,255,.45)}
+.btn{background:#fff;color:var(--p);border:none;padding:7px 14px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:700}
+.btn:hover{background:var(--lav)}
+.btn.ol{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5)}
+.btn.ol:hover{background:rgba(255,255,255,.1)}
+.btn.danger{background:#fff;color:#8B1A1A;border:1.5px solid #C84040}
+.stats{display:flex;gap:8px;padding:10px 20px;background:var(--pd);flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:8px 14px;min-width:95px;text-align:center}
+.stat-n{font-size:20px;font-weight:700;color:#fff}
+.stat-l{font-size:10px;color:rgba(255,255,255,.6);margin-top:2px}
+.board{display:flex;gap:10px;padding:14px 20px;overflow-x:auto;align-items:flex-start;min-height:calc(100vh - 170px)}
+.col{flex:0 0 215px;background:#fff;border-radius:8px;border:1px solid var(--br);overflow:hidden}
+.col-hd{padding:9px 12px;font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center;color:#fff}
+.col-cnt{background:rgba(255,255,255,.25);border-radius:10px;padding:1px 7px;font-size:11px}
+.col-body{padding:8px;min-height:80px}
+.card{background:#fff;border-radius:6px;border:1px solid var(--br);margin-bottom:8px;cursor:pointer;transition:.15s}
+.card:hover{box-shadow:0 2px 10px rgba(75,45,131,.15);border-color:var(--pl)}
+.card-top{padding:10px 10px 6px}
+.card-name{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:2px}
+.card-meta{font-size:11px;color:var(--txl)}
+.card-mid{padding:4px 10px 6px;display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;background:var(--lav);color:var(--p)}
+.tag.hi{background:#F5E8E8;color:#7A1A1A}
+.tag.mo{background:#FBF0E0;color:#6B4000}
+.tag.lo{background:#E8F5EE;color:#1A5C36}
+.card-prog{padding:2px 10px 10px}
+.prog-lbl{font-size:10px;color:var(--txl);margin-bottom:3px}
+.prog-bar{height:4px;background:var(--lav);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px;background:var(--p);transition:width .3s}
+.add-card{background:none;border:1.5px dashed var(--br);border-radius:6px;width:100%;padding:8px;color:var(--txl);font-size:12px;cursor:pointer;margin-top:2px;transition:.15s}
+.add-card:hover{border-color:var(--p);color:var(--p)}
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      background: #f1f0f7;
-      min-height: 100vh;
-      color: #111827;
-    }
+/* ── Modal ── */
+.ov{position:fixed;inset:0;background:rgba(45,26,80,.5);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto}
+.ov.open{display:flex}
+.modal{background:#fff;border-radius:10px;width:100%;max-width:920px;margin:auto;border:1px solid var(--br);display:flex;flex-direction:column;max-height:calc(100vh - 32px)}
+.mhd{background:var(--p);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-radius:10px 10px 0 0}
+.mhd h2{font-size:14px;font-weight:700}
+.mclose{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;opacity:.8;line-height:1}
+.mclose:hover{opacity:1}
+.mbody{display:flex;gap:0;flex:1;overflow:hidden}
+.mcol-l{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;border-right:1px solid var(--br)}
+.mcol-r{width:280px;flex-shrink:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--lav2)}
+.msec{background:#fff;border:1px solid var(--br);border-radius:8px;padding:14px}
+.msec h4{font-size:11px;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;padding-bottom:6px;border-bottom:1.5px solid var(--lav)}
+.mfoot{padding:12px 18px;border-top:1px solid var(--br);display:flex;justify-content:space-between;gap:8px;background:#fff;flex-shrink:0;border-radius:0 0 10px 10px}
+.form-row{display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.fg{display:flex;flex-direction:column;gap:3px;flex:1;min-width:120px}
+.fg label{font-size:11px;font-weight:700;color:var(--txm)}
+.fg input,.fg select,.fg textarea{border:1px solid var(--br);border-radius:4px;padding:6px 8px;font-size:12px;font-family:Arial,sans-serif;color:var(--tx);width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--p)}
+.fg textarea{resize:vertical;min-height:80px}
+.stage-sel{display:flex;gap:6px;flex-wrap:wrap}
+.stbtn{border:1.5px solid var(--br);border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;background:#fff;color:var(--txm);font-weight:600;transition:.15s}
+.stbtn:hover{border-color:var(--p);color:var(--p)}
+.stbtn.active{background:var(--p);color:#fff;border-color:var(--p)}
+.cl-wrap{background:var(--lav2);border:1px solid var(--br);border-radius:6px;padding:12px;margin-top:8px}
+.cl-title{font-size:11px;font-weight:700;color:var(--p);margin-bottom:8px;display:flex;justify-content:space-between}
+.cl-prog-txt{font-size:10px;font-weight:400;color:var(--txl)}
+.chk-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--br)}
+.chk-item:last-child{border-bottom:none}
+.chk-item input[type=checkbox]{margin-top:2px;accent-color:var(--p);width:14px;height:14px;flex-shrink:0;cursor:pointer}
+.chk-item label{font-size:12px;color:var(--tx);cursor:pointer;line-height:1.4}
+.chk-item label.done{text-decoration:line-through;color:var(--txl)}
 
-    /* ─── HEADER ─────────────────────────────────────────── */
-    .header {
-      background: #0c0b2d;
-      color: #fff;
-      padding: 10px 20px 0;
-    }
-
-    .header-top {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding-bottom: 10px;
-    }
-
-    .org-block {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 210px;
-      border-right: 1px solid rgba(255,255,255,0.12);
-      padding-right: 14px;
-    }
-
-    .org-icon {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-
-    .org-name {
-      font-size: 11px;
-      font-weight: 700;
-      line-height: 1.4;
-      color: #e2e8f0;
-    }
-
-    .pipeline-block {
-      flex: 1;
-    }
-
-    .pipeline-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #f8fafc;
-    }
-
-    .pipeline-sub {
-      font-size: 11px;
-      color: #94a3b8;
-      margin-top: 1px;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-left: auto;
-    }
-
-    .search-wrap {
-      position: relative;
-    }
-
-    .search-wrap svg {
-      position: absolute;
-      left: 9px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #6b7280;
-    }
-
-    #searchInput {
-      padding: 7px 10px 7px 30px;
-      border-radius: 6px;
-      border: 1px solid #2d2d5a;
-      background: #1a1a45;
-      color: #e2e8f0;
-      font-size: 12px;
-      width: 190px;
-      outline: none;
-    }
-
-    #searchInput::placeholder { color: #64748b; }
-    #searchInput:focus { border-color: #7c3aed; }
-
-    .btn {
-      padding: 7px 13px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity .15s;
-      white-space: nowrap;
-    }
-    .btn:hover { opacity: .85; }
-
-    .btn-outline {
-      border: 1px solid #5b21b6;
-      background: transparent;
-      color: #c4b5fd;
-    }
-
-    .btn-primary {
-      border: none;
-      background: #7c3aed;
-      color: #fff;
-    }
-
-    /* ─── STATS BAR ─────────────────────────────────────── */
-    .stats-bar {
-      display: flex;
-      gap: 28px;
-      padding: 8px 0 10px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      margin-top: 2px;
-    }
-
-    .stat {
-      text-align: center;
-      min-width: 60px;
-    }
-
-    .stat-value {
-      font-size: 20px;
-      font-weight: 800;
-      color: #f8fafc;
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-size: 9.5px;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      margin-top: 3px;
-    }
-
-    /* ─── BOARD ──────────────────────────────────────────── */
-    .board {
-      display: flex;
-      gap: 10px;
-      padding: 14px 16px;
-      overflow-x: auto;
-      min-height: calc(100vh - 120px);
-      align-items: flex-start;
-    }
-
-    .column {
-      min-width: 215px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      max-width: 260px;
-    }
-
-    .col-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #4c1d95;
-      color: #fff;
-      padding: 8px 11px;
-      border-radius: 8px 8px 0 0;
-      font-size: 12.5px;
-      font-weight: 700;
-      letter-spacing: .2px;
-    }
-
-    .col-count {
-      background: rgba(255,255,255,0.18);
-      border-radius: 10px;
-      padding: 1px 7px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .col-body {
-      background: #ede9fe;
-      border-radius: 0 0 8px 8px;
-      padding: 8px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      min-height: 160px;
-      transition: background .15s;
-    }
-
-    .col-body.drag-over {
-      background: #ddd6fe;
-      outline: 2px dashed #7c3aed;
-      outline-offset: -2px;
-    }
-
-    /* ─── CARDS ──────────────────────────────────────────── */
-    .card {
-      background: #fff;
-      border-radius: 7px;
-      padding: 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.09);
-      cursor: grab;
-      user-select: none;
-      transition: box-shadow .15s, transform .1s;
-    }
-
-    .card:hover {
-      box-shadow: 0 3px 10px rgba(0,0,0,.14);
-    }
-
-    .card.dragging {
-      opacity: .45;
-      cursor: grabbing;
-    }
-
-    .card-name {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #1e1b4b;
-      margin-bottom: 5px;
-    }
-
-    .card-meta {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      flex-wrap: wrap;
-      margin-bottom: 7px;
-    }
-
-    .card-age {
-      font-size: 11px;
-      color: #6b7280;
-    }
-
-    .badge {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
-      line-height: 1.4;
-    }
-
-    .badge-sc   { background: #dbeafe; color: #1d4ed8; }
-    .badge-pr   { background: #d1fae5; color: #065f46; }
-    .badge-ep   { background: #fef9c3; color: #713f12; }
-    .badge-fp   { background: #fce7f3; color: #9d174d; }
-
-    .badge-high     { background: #fee2e2; color: #991b1b; }
-    .badge-moderate { background: #fef3c7; color: #92400e; }
-    .badge-low      { background: #d1fae5; color: #065f46; }
-
-    .card-foot {
-      margin-top: 2px;
-    }
-
-    .card-foot-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 10.5px;
-      color: #6b7280;
-      margin-bottom: 4px;
-    }
-
-    .progress-bar {
-      height: 4px;
-      background: #e5e7eb;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(to right, #7c3aed, #6d28d9);
-      border-radius: 2px;
-      transition: width .3s;
-    }
-
-    /* ─── ADD CARD BUTTON ────────────────────────────────── */
-    .add-card-btn {
-      margin-top: 2px;
-      padding: 6px;
-      width: 100%;
-      border: 1.5px dashed #a78bfa;
-      border-radius: 6px;
-      background: transparent;
-      color: #7c3aed;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background .15s;
-    }
-
-    .add-card-btn:hover { background: rgba(124,58,237,.07); }
-
-    /* ─── MODAL ──────────────────────────────────────────── */
-    .overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.55);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .overlay.open { display: flex; }
-
-    .modal {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      width: 460px;
-      max-width: 95vw;
-      max-height: 92vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,.3);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .modal-title {
-      font-size: 17px;
-      font-weight: 800;
-      color: #1e1b4b;
-    }
-
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      color: #9ca3af;
-      line-height: 1;
-    }
-
-    .modal-close:hover { color: #111; }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .form-group { margin-bottom: 14px; }
-
-    .form-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: #374151;
-      margin-bottom: 5px;
-      text-transform: uppercase;
-      letter-spacing: .4px;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 8px 11px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 13px;
-      outline: none;
-      transition: border-color .15s;
-      background: #fff;
-    }
-
-    .form-control:focus { border-color: #7c3aed; }
-
-    .btn-submit {
-      width: 100%;
-      padding: 10px;
-      background: #7c3aed;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 6px;
-      transition: background .15s;
-    }
-
-    .btn-submit:hover { background: #6d28d9; }
-
-    /* ─── TOAST ──────────────────────────────────────────── */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #1e1b4b;
-      color: #fff;
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-size: 13px;
-      z-index: 999;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity .25s, transform .25s;
-      pointer-events: none;
-    }
-    .toast.show { opacity: 1; transform: translateY(0); }
-
-    /* ─── SCROLLBAR ──────────────────────────────────────── */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #c4b5fd; border-radius: 3px; }
-  </style>
+/* ── Upload ── */
+.upzone{border:2px dashed var(--br);border-radius:8px;padding:20px 12px;text-align:center;cursor:pointer;transition:.2s;background:#fff;margin-bottom:10px}
+.upzone:hover,.upzone.drag{border-color:var(--p);background:var(--lav)}
+.upzone svg{display:block;margin:0 auto 8px;opacity:.5}
+.upzone p{font-size:12px;color:var(--txm);font-weight:600;margin-bottom:3px}
+.upzone small{font-size:10px;color:var(--txl);line-height:1.5}
+.flist{display:flex;flex-direction:column;gap:6px}
+.fitem{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--br);border-radius:6px;padding:8px 10px}
+.fthumb{width:38px;height:38px;border-radius:4px;object-fit:cover;flex-shrink:0;border:1px solid var(--br)}
+.ficon{width:38px;height:38px;border-radius:4px;background:var(--lav);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;color:var(--p)}
+.finfo{flex:1;min-width:0}
+.fname{font-size:12px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fmeta{font-size:10px;color:var(--txl);margin-top:1px}
+.fbtns{display:flex;gap:3px;flex-shrink:0}
+.fbtn{background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:4px;font-size:13px;color:var(--txl)}
+.fbtn:hover{background:var(--lav);color:var(--p)}
+.fbtn.del:hover{background:#FEF0F0;color:#8B1A1A}
+.ubadge{font-size:9px;background:#FAEEDA;color:#633806;padding:1px 5px;border-radius:8px;margin-left:4px}
+.imgprev{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+.imgprev img{max-width:92%;max-height:92vh;border-radius:8px}
+.imgprev-close{position:fixed;top:14px;right:18px;background:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#333;font-weight:700}
+.empty-files{font-size:11px;color:var(--txl);text-align:center;padding:8px 0}
+</style>
 </head>
 <body>
 
-<!-- ─── HEADER ──────────────────────────────────────────── -->
-<header class="header">
-  <div class="header-top">
-    <div class="org-block">
-      <div class="org-icon">S</div>
-      <div class="org-name">Singapore<br>Cancer Society</div>
-    </div>
-    <div class="pipeline-block">
-      <div class="pipeline-title">Mammowa Prospect Pipeline</div>
-      <div class="pipeline-sub">Mammowa Mammogram Management Trainee</div>
-    </div>
-    <div class="header-actions">
-      <div class="search-wrap">
-        <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2">
-          <circle cx="9" cy="9" r="6"/><line x1="14" y1="14" x2="19" y2="19"/>
+<div style="height:80px;background:#F7F4FD;display:flex;align-items:center;justify-content:center;font-size:11px;color:#c0b8d4;letter-spacing:.05em;border-bottom:1px solid #E8E0F5;">&#8595; Scroll down to view the Mammobus Pipeline Tracker &#8595;</div>
+<header>
+  <div class="hleft">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3C12 3 6 7 6 13a6 6 0 0012 0C18 7 12 3 12 3z" fill="#4B2D83"/>
+          <path d="M12 8v8M9 11h6" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
-        <input id="searchInput" type="text" placeholder="Search by name…" />
       </div>
-      <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
-      <button class="btn btn-primary" onclick="openModal()">+ Add Prospect</button>
+      <div class="logo-text"><h1>Singapore Cancer Society</h1><p>Minimising Cancer, Maximising Lives</p></div>
     </div>
+    <div class="hdiv"></div>
+    <div class="hsub"><span>Mammobus Prospect Pipeline</span><small>Community Mammobus Programme — Engagement Tracker</small></div>
   </div>
-  <div class="stats-bar" id="statsBar"></div>
+  <div class="toolbar">
+    <input type="text" id="search-input" placeholder="Search by name..." oninput="filterCards()">
+    <button class="btn ol" onclick="exportData()">Export CSV</button>
+    <button class="btn" onclick="openNew()">+ Add Prospect</button>
+  </div>
 </header>
 
-<!-- ─── BOARD ───────────────────────────────────────────── -->
-<main class="board" id="board"></main>
+<div class="stats" id="stats-bar"></div>
+<div class="board" id="board"></div>
 
-<!-- ─── ADD / EDIT MODAL ────────────────────────────────── -->
-<div class="overlay" id="overlay">
+<!-- Modal -->
+<div class="ov" id="ov" onclick="ovClick(event)">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="modalTitle">Add Prospect</div>
-      <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="mhd">
+      <h2 id="modal-title">Prospect</h2>
+      <button class="mclose" onclick="closeModal()">&#x2715;</button>
     </div>
-    <form id="prospectForm" onsubmit="submitForm(event)">
-      <input type="hidden" id="editId" />
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Full Name *</label>
-          <input class="form-control" id="fName" required placeholder="e.g. Hamidah Bte Yusof" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Age *</label>
-          <input class="form-control" id="fAge" type="number" min="18" max="120" required placeholder="e.g. 50" />
-        </div>
+    <div class="mbody">
+      <div class="mcol-l" id="mcol-l"></div>
+      <div class="mcol-r" id="mcol-r"></div>
+    </div>
+    <div class="mfoot">
+      <button class="btn danger" id="del-btn" onclick="deleteProspect()" style="display:none">Delete</button>
+      <div style="display:flex;gap:8px;margin-left:auto">
+        <button class="btn" style="background:#fff;color:var(--p);border:1px solid var(--br)" onclick="closeModal()">Cancel</button>
+        <button class="btn" onclick="saveProspect()">Save</button>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Citizenship</label>
-          <select class="form-control" id="fCitizenship">
-            <option value="SC">SC – Singapore Citizen</option>
-            <option value="PR">PR – Permanent Resident</option>
-            <option value="EP">EP – Employment Pass</option>
-            <option value="FP">FP – Foreign Permit</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Risk Level</label>
-          <select class="form-control" id="fRisk">
-            <option value="Low">Low</option>
-            <option value="Moderate" selected>Moderate</option>
-            <option value="High">High</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Pipeline Stage</label>
-          <select class="form-control" id="fStage">
-            <option value="Unaware">Unaware</option>
-            <option value="Aware">Aware</option>
-            <option value="Enquiring">Enquiring</option>
-            <option value="Qualified">Qualified</option>
-            <option value="Booked">Booked</option>
-            <option value="Screened">Screened</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tasks Completed</label>
-          <input class="form-control" id="fTasks" type="number" min="0" max="6" value="0" placeholder="0–6" />
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">First-Time Screener?</label>
-        <select class="form-control" id="fFirstTime">
-          <option value="true">Yes</option>
-          <option value="false">No</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Notes</label>
-        <input class="form-control" id="fNotes" placeholder="Optional notes…" />
-      </div>
-      <button type="submit" class="btn-submit">Save Prospect</button>
-    </form>
+    </div>
   </div>
 </div>
 
-<!-- ─── TOAST ────────────────────────────────────────────── -->
-<div class="toast" id="toast"></div>
-
 <script>
-  // ─── DATA ──────────────────────────────────────────────────
-  const STAGES = ['Unaware', 'Aware', 'Enquiring', 'Qualified', 'Booked', 'Screened'];
-  const TOTAL_TASKS = 6;
+const STAGES=[
+  {id:'unaware',  label:'Unaware',   shade:'#7B5EA7'},
+  {id:'aware',    label:'Aware',     shade:'#6B4DA0'},
+  {id:'enquiring',label:'Enquiring', shade:'#5C3D95'},
+  {id:'qualified',label:'Qualified', shade:'#4B2D83'},
+  {id:'booked',   label:'Booked',    shade:'#3a2268'},
+  {id:'screened', label:'Screened',  shade:'#2D1A50'},
+];
+const CL={
+  unaware:['Community source or referral channel identified','Initial contact made (event / flyer / GP mention)','Basic demographic noted (approx. age, area)','Language preference identified','Added to awareness campaign list'],
+  aware:['Has heard of Mammobus or breast screening','Interest level gauged (curious / considering)','Programme overview shared (benefits, subsidy)','BCF / SCS informational materials sent','Barrier type identified (fear / cost / time / other)','Follow-up date scheduled'],
+  enquiring:['Full name and date of birth collected','NRIC / FIN number recorded','Residency status confirmed (SC / PR / Foreigner)','Mobile number and email captured','Age eligibility confirmed (40 years and above)','Not currently pregnant or breastfeeding','No active breast symptoms present','Date of last mammogram established','Healthier SG or CHAS enrolment checked','First-time screener status noted'],
+  qualified:['All eligibility criteria met and documented','Subsidy pathway confirmed (Healthier SG / CHAS / self-pay)','Preferred screening date and time captured','Mammobus location / event communicated','Pre-screening instructions shared (no deodorant etc.)','What to bring explained (NRIC, two-piece clothing)','COVID vaccination date noted if within 6 weeks','Family history of breast cancer documented','Any implants or prior surgery flagged for radiographer','Consent to data collection obtained (PDPA)'],
+  booked:['Appointment confirmation sent (SMS / email)','Reminder sent 1 week before appointment','Reminder sent 3 days before appointment','No-show deposit process explained','Transport or logistics support offered if needed','Emergency contact details collected','Day-of checklist shared with participant','Coordinator notified of any special requirements'],
+  screened:['Attendance confirmed on screening day','Screening completed without issues','Results communication timeline explained','Results sent / received by participant','Abnormal results — referral pathway activated','Normal results — next screening date communicated','Participant satisfaction / feedback collected','Peer referral ask made (refer a friend)','Re-engagement reminder set (12 or 24 months)','Record updated in system'],
+};
 
-  // Stage-based conversion probability displayed on each card
-  const STAGE_PCT = { Unaware: 2, Aware: 8, Enquiring: 25, Qualified: 50, Booked: 75, Screened: 100 };
+let prospects=[
+  {id:1, name:'Tan Mei Ling',          age:52,nric:'S****567A',status:'SC',risk:'High',    stage:'booked',    first:true, notes:'Family history — mother had breast cancer. Very motivated. Prefers morning slot.',checks:{booked:[true,true,true,false,false,true,false,false]},files:[]},
+  {id:2, name:'Siti Rahimah Bte Omar', age:45,nric:'S****234B',status:'SC',risk:'Moderate',stage:'qualified', first:false,notes:'Enrolled in Healthier SG. Prefers Malay-speaking coordinator. CHAS Orange.',checks:{qualified:[true,true,true,true,true,false,false,false,false,false]},files:[]},
+  {id:3, name:'Lim Ah Kow',            age:48,nric:'S****891C',status:'PR',risk:'Low',     stage:'enquiring', first:true, notes:'Came from void deck flyer. Needs Mandarin support.',checks:{enquiring:[true,true,true,true,true,false,false,false,false,false]},files:[]},
+  {id:4, name:'Priya d/o Subramaniam', age:41,nric:'S****445D',status:'SC',risk:'Low',     stage:'aware',     first:true, notes:'Afraid of results. Referred to BCF counsellor. Follow up in 2 weeks.',checks:{},files:[]},
+  {id:5, name:'Wong Li Fang',          age:55,nric:'S****320E',status:'SC',risk:'High',    stage:'screened',  first:false,notes:'Results normal. Re-engagement reminder set for March 2027.',checks:{screened:[true,true,true,true,true,true,true,true,true,true]},files:[]},
+  {id:6, name:'Hamidah Bte Yusof',     age:50,nric:'S****776F',status:'SC',risk:'Moderate',stage:'unaware',   first:true, notes:'Met at Bishan CC community event. Interested but no contact taken yet.',checks:{},files:[]},
+  {id:7, name:'Ng Boon Hwee',          age:60,nric:'S****103G',status:'SC',risk:'High',    stage:'screened',  first:false,notes:'Results showed calcification — referred to NCCS for follow-up.',checks:{screened:[true,true,true,true,false,false,true,false,true,false]},files:[]},
+  {id:8, name:'Kavitha Rajendran',     age:43,nric:'S****558H',status:'SC',risk:'Moderate',stage:'booked',    first:true, notes:'Workplace booking via Changi Airport Group event. Confirmed slot 15 Apr.',checks:{booked:[true,true,false,true,false,false,false,false]},files:[]},
+  {id:9, name:'Chen Xiao Hui',         age:47,nric:'S****299J',status:'PR',risk:'Low',     stage:'enquiring', first:true, notes:'Heard from colleague. Unsure about PR subsidy rates. Mandarin preferred.',checks:{enquiring:[true,true,true,false,true,true,true,false,false,false]},files:[]},
+  {id:10,name:'Nurul Ain Bte Rosli',   age:53,nric:'S****641K',status:'SC',risk:'High',    stage:'qualified', first:false,notes:'Had a scare 3 years ago — benign cyst. Overdue for screening. Very cooperative.',checks:{qualified:[true,true,true,true,true,true,true,true,false,false]},files:[]},
+  {id:11,name:'Lee Geok Eng',          age:66,nric:'S****088L',status:'SC',risk:'Moderate',stage:'aware',     first:false,notes:'Referred by daughter. Last screened 3 years ago. Needs reminder on procedure.',checks:{aware:[true,true,false,false,false,false]},files:[]},
+  {id:12,name:'Fatimah Bte Hashim',    age:44,nric:'S****714M',status:'SC',risk:'Low',     stage:'unaware',   first:true, notes:'Spotted at Geylang Serai Bazaar booth. Left contact number.',checks:{},files:[]},
+];
+let nextId=13, editId=null, filterTerm='', pendingFiles=[];
 
-  let prospects = [
-    { id: 1,  name: 'Hamidah Bte Yusof',       age: 50, citizenship: 'SC', risk: 'Moderate', stage: 'Unaware',   tasks: 4, firstTime: true,  notes: '' },
-    { id: 2,  name: 'Fatimah Bte Hashin',       age: 45, citizenship: 'SC', risk: 'Low',      stage: 'Unaware',   tasks: 4, firstTime: false, notes: '' },
-    { id: 3,  name: 'Priya d/o Subramaniam',    age: 41, citizenship: 'SC', risk: 'Moderate', stage: 'Aware',     tasks: 1, firstTime: true,  notes: '' },
-    { id: 4,  name: 'Lee Geok Eng',             age: 46, citizenship: 'SC', risk: 'Moderate', stage: 'Aware',     tasks: 1, firstTime: false, notes: '' },
-    { id: 5,  name: 'Lim Ah Kow',               age: 88, citizenship: 'PR', risk: 'Low',      stage: 'Enquiring', tasks: 2, firstTime: true,  notes: '' },
-    { id: 6,  name: 'Chan Xiao Hui',            age: 56, citizenship: 'SC', risk: 'Low',      stage: 'Enquiring', tasks: 3, firstTime: false, notes: '' },
-    { id: 7,  name: 'Siti Rahimah Bte Omar',    age: 43, citizenship: 'SC', risk: 'Moderate', stage: 'Qualified', tasks: 3, firstTime: true,  notes: '' },
-    { id: 8,  name: 'Nurul Ain Bte Rosli',      age: 38, citizenship: 'SC', risk: 'Low',      stage: 'Qualified', tasks: 4, firstTime: false, notes: '' },
-    { id: 9,  name: 'Tan Mei Ling',             age: 41, citizenship: 'SC', risk: 'High',     stage: 'Booked',    tasks: 5, firstTime: true,  notes: '' },
-    { id: 10, name: 'Kavitha Rajendran',        age: 52, citizenship: 'SC', risk: 'Moderate', stage: 'Booked',    tasks: 5, firstTime: false, notes: '' },
-    { id: 11, name: 'Wong Li Fang',             age: 48, citizenship: 'SC', risk: 'High',     stage: 'Screened',  tasks: 6, firstTime: true,  notes: '' },
-    { id: 12, name: 'Ng Boon Hwee',             age: 55, citizenship: 'SC', risk: 'High',     stage: 'Screened',  tasks: 6, firstTime: false, notes: '' },
-  ];
+function getChecks(p,st){
+  if(!p.checks) p.checks={};
+  if(!p.checks[st]) p.checks[st]=CL[st].map(()=>false);
+  while(p.checks[st].length<CL[st].length) p.checks[st].push(false);
+  return p.checks[st];
+}
+function progOf(p,st){const c=getChecks(p,st),d=c.filter(Boolean).length;return{d,t:c.length,pct:Math.round(d/c.length*100)};}
+function fmtSz(b){return b>1048576?(b/1048576).toFixed(1)+' MB':(b/1024).toFixed(0)+' KB';}
+function ext(n){return(n.split('.').pop()||'').toUpperCase().slice(0,4);}
+function isImg(t){return t&&t.startsWith('image/');}
 
-  let nextId = 13;
-  let dragId = null;
-  let searchQuery = '';
-  let addingToStage = null;
-
-  // ─── RENDER ────────────────────────────────────────────────
-  function render() {
-    renderStats();
-    renderBoard();
-  }
-
-  function renderStats() {
-    const total     = prospects.length;
-    const booked    = prospects.filter(p => p.stage === 'Booked' || p.stage === 'Screened').length;
-    const screened  = prospects.filter(p => p.stage === 'Screened').length;
-    const highRisk  = prospects.filter(p => p.risk === 'High').length;
-    const firstTime = prospects.filter(p => p.firstTime).length;
-    const rate      = total ? Math.round((screened / total) * 100) : 0;
-
-    document.getElementById('statsBar').innerHTML = [
-      { v: total,     l: 'Total Prospects'     },
-      { v: booked,    l: 'Appointments Booked' },
-      { v: screened,  l: 'Screened'            },
-      { v: highRisk,  l: 'High Risk'           },
-      { v: firstTime, l: 'First-Time Screeners'},
-      { v: rate + '%',l: 'Conversion Rate'     },
-    ].map(s => `
-      <div class="stat">
-        <div class="stat-value">${s.v}</div>
-        <div class="stat-label">${s.l}</div>
-      </div>
-    `).join('');
-  }
-
-  function renderBoard() {
-    const q = searchQuery.toLowerCase().trim();
-    const filtered = q ? prospects.filter(p => p.name.toLowerCase().includes(q)) : prospects;
-
-    document.getElementById('board').innerHTML = STAGES.map(stage => {
-      const cards = filtered.filter(p => p.stage === stage);
-      return `
-        <div class="column">
-          <div class="col-header">
-            ${stage}
-            <span class="col-count">${cards.length}</span>
-          </div>
-          <div class="col-body"
-            data-stage="${stage}"
-            ondragover="onDragOver(event)"
-            ondragleave="onDragLeave(event)"
-            ondrop="onDrop(event, '${stage}')">
-            ${cards.map(cardHTML).join('')}
-            <button class="add-card-btn" onclick="openModal('${stage}')">+ Add</button>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function cardHTML(p) {
-    const pct  = Math.round((p.tasks / TOTAL_TASKS) * 100);
-    const conv = STAGE_PCT[p.stage] || 0;
-    return `
-      <div class="card"
-        draggable="true"
-        data-id="${p.id}"
-        ondragstart="onDragStart(event, ${p.id})"
-        ondragend="onDragEnd(event)"
-        ondblclick="openEditModal(${p.id})">
-        <div class="card-name">${esc(p.name)}</div>
-        <div class="card-meta">
-          <span class="card-age">Age ${p.age}</span>
-          <span class="badge badge-${p.citizenship.toLowerCase()}">${p.citizenship}</span>
-          <span class="badge badge-${p.risk.toLowerCase()}">${p.risk} risk</span>
-        </div>
-        <div class="card-foot">
-          <div class="card-foot-row">
-            <span>${p.tasks}/${TOTAL_TASKS} tasks</span>
-            <span>${conv}%</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width:${pct}%"></div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  // ─── DRAG & DROP ───────────────────────────────────────────
-  function onDragStart(e, id) {
-    dragId = id;
-    e.target.classList.add('dragging');
-    e.dataTransfer.effectAllowed = 'move';
-  }
-
-  function onDragEnd(e) {
-    e.target.classList.remove('dragging');
-    document.querySelectorAll('.col-body').forEach(el => el.classList.remove('drag-over'));
-    dragId = null;
-  }
-
-  function onDragOver(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    e.currentTarget.classList.add('drag-over');
-  }
-
-  function onDragLeave(e) {
-    e.currentTarget.classList.remove('drag-over');
-  }
-
-  function onDrop(e, stage) {
-    e.preventDefault();
-    e.currentTarget.classList.remove('drag-over');
-    if (dragId !== null) {
-      const p = prospects.find(x => x.id === dragId);
-      if (p && p.stage !== stage) {
-        p.stage = stage;
-        // Auto-advance tasks when moving forward
-        const stageIdx = STAGES.indexOf(stage);
-        const minTasks = stageIdx; // rough minimum
-        if (p.tasks < minTasks) p.tasks = minTasks;
-        toast(`Moved ${p.name} → ${stage}`);
-        render();
-      }
-    }
-  }
-
-  // ─── MODAL ─────────────────────────────────────────────────
-  function openModal(stage) {
-    addingToStage = stage || 'Unaware';
-    document.getElementById('modalTitle').textContent = 'Add Prospect';
-    document.getElementById('editId').value = '';
-    document.getElementById('prospectForm').reset();
-    document.getElementById('fStage').value = addingToStage;
-    document.getElementById('overlay').classList.add('open');
-  }
-
-  function openEditModal(id) {
-    const p = prospects.find(x => x.id === id);
-    if (!p) return;
-    document.getElementById('modalTitle').textContent = 'Edit Prospect';
-    document.getElementById('editId').value = id;
-    document.getElementById('fName').value        = p.name;
-    document.getElementById('fAge').value         = p.age;
-    document.getElementById('fCitizenship').value = p.citizenship;
-    document.getElementById('fRisk').value        = p.risk;
-    document.getElementById('fStage').value       = p.stage;
-    document.getElementById('fTasks').value       = p.tasks;
-    document.getElementById('fFirstTime').value   = p.firstTime;
-    document.getElementById('fNotes').value       = p.notes;
-    document.getElementById('overlay').classList.add('open');
-  }
-
-  function closeModal() {
-    document.getElementById('overlay').classList.remove('open');
-  }
-
-  function submitForm(e) {
-    e.preventDefault();
-    const editId = document.getElementById('editId').value;
-    const data = {
-      name:        document.getElementById('fName').value.trim(),
-      age:         parseInt(document.getElementById('fAge').value),
-      citizenship: document.getElementById('fCitizenship').value,
-      risk:        document.getElementById('fRisk').value,
-      stage:       document.getElementById('fStage').value,
-      tasks:       parseInt(document.getElementById('fTasks').value) || 0,
-      firstTime:   document.getElementById('fFirstTime').value === 'true',
-      notes:       document.getElementById('fNotes').value.trim(),
-    };
-
-    if (editId) {
-      const idx = prospects.findIndex(p => p.id === parseInt(editId));
-      if (idx !== -1) { prospects[idx] = { ...prospects[idx], ...data }; toast('Prospect updated.'); }
-    } else {
-      prospects.push({ id: nextId++, ...data });
-      toast(`${data.name} added.`);
-    }
-
-    closeModal();
-    render();
-  }
-
-  // ─── EXPORT CSV ────────────────────────────────────────────
-  function exportCSV() {
-    const cols = ['ID','Name','Age','Citizenship','Risk','Stage','Tasks Completed','First-Time Screener','Notes'];
-    const rows = prospects.map(p => [
-      p.id, `"${p.name}"`, p.age, p.citizenship, p.risk, p.stage, p.tasks, p.firstTime ? 'Yes' : 'No', `"${p.notes}"`
-    ]);
-    const csv = [cols.join(','), ...rows.map(r => r.join(','))].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href     = url;
-    a.download = `mammowa-pipeline-${new Date().toISOString().slice(0,10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast('CSV exported.');
-  }
-
-  // ─── SEARCH ────────────────────────────────────────────────
-  document.getElementById('searchInput').addEventListener('input', function() {
-    searchQuery = this.value;
-    renderBoard();
+/* ── Board ── */
+function renderBoard(){
+  const board=document.getElementById('board');
+  board.innerHTML='';
+  const term=filterTerm.toLowerCase();
+  STAGES.forEach(st=>{
+    const items=prospects.filter(p=>p.stage===st.id&&(!term||p.name.toLowerCase().includes(term)));
+    const col=document.createElement('div');
+    col.className='col';
+    col.innerHTML=`<div class="col-hd" style="background:${st.shade}">${st.label}<span class="col-cnt">${items.length}</span></div>
+      <div class="col-body">${items.map(p=>cardHTML(p,st)).join('')}<button class="add-card" onclick="openNew('${st.id}')">+ Add</button></div>`;
+    board.appendChild(col);
   });
+  renderStats();
+}
+function cardHTML(p,st){
+  const pg=progOf(p,p.stage);
+  const rc=p.risk==='High'?'hi':p.risk==='Moderate'?'mo':'lo';
+  return `<div class="card" onclick="openEdit(${p.id})">
+    <div class="card-top"><div class="card-name">${p.name}</div><div class="card-meta">Age ${p.age} · ${p.status}${p.first?' · ★ First':''}</div></div>
+    <div class="card-mid"><span class="tag">${p.status}</span><span class="tag ${rc}">${p.risk} risk</span>${(p.files&&p.files.length)?`<span class="tag" style="background:#EEE8FF">&#128206; ${p.files.length}</span>`:''}</div>
+    <div class="card-prog"><div class="prog-lbl">${pg.d}/${pg.t} tasks · ${pg.pct}%</div><div class="prog-bar"><div class="prog-fill" style="width:${pg.pct}%;background:${st.shade}"></div></div></div>
+  </div>`;
+}
+function renderStats(){
+  const t=prospects.length,bk=prospects.filter(p=>p.stage==='booked').length,sc=prospects.filter(p=>p.stage==='screened').length,hi=prospects.filter(p=>p.risk==='High').length,fi=prospects.filter(p=>p.first).length;
+  document.getElementById('stats-bar').innerHTML=[{n:t,l:'Total prospects'},{n:bk,l:'Appointments booked'},{n:sc,l:'Screened'},{n:hi,l:'High risk'},{n:fi,l:'First-time screeners'},{n:Math.round(sc/Math.max(t,1)*100)+'%',l:'Conversion rate'}]
+    .map(s=>`<div class="stat"><div class="stat-n">${s.n}</div><div class="stat-l">${s.l}</div></div>`).join('');
+}
 
-  // Close modal on overlay click
-  document.getElementById('overlay').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
+/* ── Modal build ── */
+function buildLeft(p,st){
+  const checks=p?getChecks(p,st):CL[st].map(()=>false);
+  const done=checks.filter(Boolean).length;
+  return `
+  <div class="msec">
+    <h4>Personal details</h4>
+    <div class="form-row">
+      <div class="fg"><label>Full name *</label><input id="f-name" type="text" value="${p?p.name:''}" placeholder="e.g. Tan Mei Ling"></div>
+      <div class="fg" style="flex:0 0 80px"><label>Age *</label><input id="f-age" type="number" value="${p?p.age:''}" placeholder="45" min="18" max="100"></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>NRIC / FIN</label><input id="f-nric" type="text" value="${p?p.nric:''}" placeholder="S****567A"></div>
+      <div class="fg"><label>Residency *</label><select id="f-status">
+        <option value="SC" ${p&&p.status==='SC'?'selected':''}>Singapore Citizen</option>
+        <option value="PR" ${p&&p.status==='PR'?'selected':''}>Permanent Resident</option>
+        <option value="FG" ${p&&p.status==='FG'?'selected':''}>Foreigner</option>
+      </select></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Risk level *</label><select id="f-risk">
+        <option value="Low"      ${p&&p.risk==='Low'?     'selected':''}>Low</option>
+        <option value="Moderate" ${p&&p.risk==='Moderate'?'selected':''}>Moderate</option>
+        <option value="High"     ${p&&p.risk==='High'?    'selected':''}>High</option>
+      </select></div>
+      <div class="fg"><label>First-time screener?</label><select id="f-first">
+        <option value="1" ${p&&p.first? 'selected':''}>Yes</option>
+        <option value="0" ${p&&!p.first?'selected':''}>No</option>
+      </select></div>
+    </div>
+  </div>
+  <div class="msec">
+    <h4>Pipeline stage</h4>
+    <div class="stage-sel">${STAGES.map(s=>`<button class="stbtn ${s.id===st?'active':''}" onclick="switchStage('${s.id}')">${s.label}</button>`).join('')}</div>
+    <input type="hidden" id="f-stage" value="${st}">
+  </div>
+  <div class="msec">
+    <h4>Stage checklist</h4>
+    <div class="cl-wrap" id="cl-wrap">
+      <div class="cl-title"><span>${STAGES.find(s=>s.id===st).label} — tasks</span><span class="cl-prog-txt" id="cl-prog">${done} / ${CL[st].length} completed</span></div>
+      ${CL[st].map((t,i)=>`<div class="chk-item"><input type="checkbox" id="ck${i}" ${checks[i]?'checked':''} onchange="updProg()"><label for="ck${i}" class="${checks[i]?'done':''}">${t}</label></div>`).join('')}
+    </div>
+  </div>
+  <div class="msec">
+    <h4>Case notes</h4>
+    <div class="fg"><textarea id="f-notes" placeholder="Case notes, barriers, follow-up actions...">${p?p.notes:''}</textarea></div>
+  </div>`;
+}
+
+function buildRight(p){
+  return `
+  <div class="msec" style="flex:1">
+    <h4>Documents &amp; files</h4>
+    <div class="upzone" id="upzone" onclick="document.getElementById('fi').click()" ondragover="dOver(event)" ondragleave="dLeave(event)" ondrop="dDrop(event)">
+      <input type="file" id="fi" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt" style="display:none" onchange="handleFiles(this.files)">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4B2D83" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      <p>Click or drag &amp; drop</p>
+      <small>Images · PDF · Word · Excel · TXT<br>Max 10 MB per file</small>
+    </div>
+    <div class="flist" id="flist"></div>
+  </div>`;
+}
+
+function renderFileList(){
+  const el=document.getElementById('flist');
+  if(!el) return;
+  const p=editId?prospects.find(x=>x.id===editId):null;
+  const saved=(p&&p.files)||[];
+  const all=[...saved,...pendingFiles];
+  if(!all.length){el.innerHTML=`<div class="empty-files">No files attached yet.</div>`;return;}
+  el.innerHTML=all.map((f,i)=>{
+    const isPend=i>=saved.length;
+    const thumb=isImg(f.type)?`<img class="fthumb" src="${f.dataUrl}" alt="${f.name}">`:`<div class="ficon">${ext(f.name)}</div>`;
+    const badge=isPend?`<span class="ubadge">unsaved</span>`:'';
+    return `<div class="fitem">
+      ${thumb}
+      <div class="finfo"><div class="fname">${f.name}${badge}</div><div class="fmeta">${fmtSz(f.size)}</div></div>
+      <div class="fbtns">
+        <button class="fbtn" onclick="viewFile(${i})" title="View">&#128065;</button>
+        <button class="fbtn" onclick="dlFile(${i})" title="Download">&#8681;</button>
+        <button class="fbtn del" onclick="rmFile(${i})" title="Remove">&#x2715;</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function handleFiles(fl){
+  Array.from(fl).forEach(f=>{
+    if(f.size>10*1024*1024){alert(f.name+' exceeds 10MB.');return;}
+    const r=new FileReader();
+    r.onload=e=>{pendingFiles.push({name:f.name,size:f.size,type:f.type,dataUrl:e.target.result});renderFileList();};
+    r.readAsDataURL(f);
   });
+  document.getElementById('fi').value='';
+}
+function dOver(e){e.preventDefault();document.getElementById('upzone').classList.add('drag');}
+function dLeave(){document.getElementById('upzone').classList.remove('drag');}
+function dDrop(e){e.preventDefault();dLeave();handleFiles(e.dataTransfer.files);}
 
-  // ─── TOAST ─────────────────────────────────────────────────
-  let toastTimer;
-  function toast(msg) {
-    const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+function viewFile(i){
+  const p=editId?prospects.find(x=>x.id===editId):null;
+  const all=[...(p&&p.files||[]),...pendingFiles];
+  const f=all[i]; if(!f) return;
+  if(isImg(f.type)){
+    const ov=document.createElement('div');ov.className='imgprev';
+    ov.innerHTML=`<button class="imgprev-close" onclick="this.parentNode.remove()">&#x2715;</button><img src="${f.dataUrl}" alt="${f.name}">`;
+    ov.onclick=e=>{if(e.target===ov)ov.remove();};
+    document.body.appendChild(ov);
+  } else { const a=document.createElement('a');a.href=f.dataUrl;a.target='_blank';a.click(); }
+}
+function dlFile(i){
+  const p=editId?prospects.find(x=>x.id===editId):null;
+  const all=[...(p&&p.files||[]),...pendingFiles];
+  const f=all[i]; if(!f) return;
+  const a=document.createElement('a');a.href=f.dataUrl;a.download=f.name;a.click();
+}
+function rmFile(i){
+  const p=editId?prospects.find(x=>x.id===editId):null;
+  const saved=(p&&p.files)||[];
+  if(i<saved.length){if(!confirm('Remove "'+saved[i].name+'"?'))return;saved.splice(i,1);if(p)p.files=saved;}
+  else pendingFiles.splice(i-saved.length,1);
+  renderFileList();
+}
+
+function switchStage(stId){
+  const p=editId?prospects.find(x=>x.id===editId):null;
+  document.getElementById('f-stage').value=stId;
+  document.querySelectorAll('.stbtn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===STAGES.find(s=>s.id===stId).label));
+  const ex=(p&&p.checks&&p.checks[stId])?p.checks[stId]:CL[stId].map(()=>false);
+  const done=ex.filter(Boolean).length;
+  document.getElementById('cl-wrap').innerHTML=`
+    <div class="cl-title"><span>${STAGES.find(s=>s.id===stId).label} — tasks</span><span class="cl-prog-txt" id="cl-prog">${done} / ${CL[stId].length} completed</span></div>
+    ${CL[stId].map((t,i)=>`<div class="chk-item"><input type="checkbox" id="ck${i}" ${ex[i]?'checked':''} onchange="updProg()"><label for="ck${i}" class="${ex[i]?'done':''}">${t}</label></div>`).join('')}`;
+}
+
+function updProg(){
+  const stId=document.getElementById('f-stage').value;
+  let done=0;const total=CL[stId].length;
+  for(let i=0;i<total;i++){const cb=document.getElementById('ck'+i);if(cb&&cb.checked){done++;if(cb.nextElementSibling)cb.nextElementSibling.className='done';}else{if(cb&&cb.nextElementSibling)cb.nextElementSibling.className='';}}
+  const pg=document.getElementById('cl-prog');if(pg)pg.textContent=`${done} / ${total} completed`;
+}
+
+function openNew(stId){
+  editId=null;pendingFiles=[];
+  document.getElementById('modal-title').textContent='Add New Prospect';
+  document.getElementById('del-btn').style.display='none';
+  document.getElementById('mcol-l').innerHTML=buildLeft(null,stId||'unaware');
+  document.getElementById('mcol-r').innerHTML=buildRight(null);
+  renderFileList();
+  document.getElementById('ov').classList.add('open');
+}
+function openEdit(id){
+  editId=id;pendingFiles=[];
+  const p=prospects.find(x=>x.id===id);
+  document.getElementById('modal-title').textContent='Edit — '+p.name;
+  document.getElementById('del-btn').style.display='inline-block';
+  document.getElementById('mcol-l').innerHTML=buildLeft(p,p.stage);
+  document.getElementById('mcol-r').innerHTML=buildRight(p);
+  renderFileList();
+  document.getElementById('ov').classList.add('open');
+}
+
+function saveProspect(){
+  const name=document.getElementById('f-name').value.trim();
+  const age=parseInt(document.getElementById('f-age').value);
+  if(!name||!age){alert('Please enter at least a name and age.');return;}
+  const stId=document.getElementById('f-stage').value;
+  const checks=CL[stId].map((_,i)=>{const cb=document.getElementById('ck'+i);return cb?cb.checked:false;});
+  if(editId){
+    const p=prospects.find(x=>x.id===editId);
+    p.name=name;p.age=age;p.nric=document.getElementById('f-nric').value.trim();
+    p.status=document.getElementById('f-status').value;p.risk=document.getElementById('f-risk').value;
+    p.first=document.getElementById('f-first').value==='1';p.stage=stId;
+    p.notes=document.getElementById('f-notes').value.trim();
+    if(!p.checks)p.checks={};p.checks[stId]=checks;
+    if(!p.files)p.files=[];p.files=[...p.files,...pendingFiles];
+  } else {
+    const co={};co[stId]=checks;
+    prospects.push({id:nextId++,name,age,nric:document.getElementById('f-nric').value.trim(),status:document.getElementById('f-status').value,risk:document.getElementById('f-risk').value,first:document.getElementById('f-first').value==='1',stage:stId,notes:document.getElementById('f-notes').value.trim(),checks:co,files:[...pendingFiles]});
   }
-
-  // ─── HELPERS ───────────────────────────────────────────────
-  function esc(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  // ─── INIT ──────────────────────────────────────────────────
-  render();
+  pendingFiles=[];closeModal();renderBoard();
+}
+function deleteProspect(){if(!confirm('Remove this prospect?'))return;prospects=prospects.filter(p=>p.id!==editId);closeModal();renderBoard();}
+function closeModal(){document.getElementById('ov').classList.remove('open');editId=null;}
+function ovClick(e){if(e.target.id==='ov')closeModal();}
+function filterCards(){filterTerm=document.getElementById('search-input').value;renderBoard();}
+function exportData(){
+  const rows=[['Name','Age','NRIC','Status','Risk','Stage','First Screener','Files','Notes']];
+  prospects.forEach(p=>{const st=STAGES.find(s=>s.id===p.stage);rows.push([p.name,p.age,p.nric,p.status,p.risk,st?st.label:'',p.first?'Yes':'No',(p.files||[]).length,'"'+(p.notes||'').replace(/"/g,"'")+'"']);});
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(rows.map(r=>r.join(',')).join('\n'));a.download='mammobus_pipeline.csv';a.click();
+}
+renderBoard();
 </script>
 </body>
 </html>
