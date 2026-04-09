@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mammowa Prospect Pipeline</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f1f0f7;
+      min-height: 100vh;
+      color: #111827;
+    }
+
+    /* ─── HEADER ─────────────────────────────────────────── */
+    .header {
+      background: #0c0b2d;
+      color: #fff;
+      padding: 10px 20px 0;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 10px;
+    }
+
+    .org-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 210px;
+      border-right: 1px solid rgba(255,255,255,0.12);
+      padding-right: 14px;
+    }
+
+    .org-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .org-name {
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #e2e8f0;
+    }
+
+    .pipeline-block {
+      flex: 1;
+    }
+
+    .pipeline-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .pipeline-sub {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 1px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b7280;
+    }
+
+    #searchInput {
+      padding: 7px 10px 7px 30px;
+      border-radius: 6px;
+      border: 1px solid #2d2d5a;
+      background: #1a1a45;
+      color: #e2e8f0;
+      font-size: 12px;
+      width: 190px;
+      outline: none;
+    }
+
+    #searchInput::placeholder { color: #64748b; }
+    #searchInput:focus { border-color: #7c3aed; }
+
+    .btn {
+      padding: 7px 13px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .15s;
+      white-space: nowrap;
+    }
+    .btn:hover { opacity: .85; }
+
+    .btn-outline {
+      border: 1px solid #5b21b6;
+      background: transparent;
+      color: #c4b5fd;
+    }
+
+    .btn-primary {
+      border: none;
+      background: #7c3aed;
+      color: #fff;
+    }
+
+    /* ─── STATS BAR ─────────────────────────────────────── */
+    .stats-bar {
+      display: flex;
+      gap: 28px;
+      padding: 8px 0 10px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-top: 2px;
+    }
+
+    .stat {
+      text-align: center;
+      min-width: 60px;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: #f8fafc;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 9.5px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-top: 3px;
+    }
+
+    /* ─── BOARD ──────────────────────────────────────────── */
+    .board {
+      display: flex;
+      gap: 10px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      min-height: calc(100vh - 120px);
+      align-items: flex-start;
+    }
+
+    .column {
+      min-width: 215px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 260px;
+    }
+
+    .col-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #4c1d95;
+      color: #fff;
+      padding: 8px 11px;
+      border-radius: 8px 8px 0 0;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+
+    .col-count {
+      background: rgba(255,255,255,0.18);
+      border-radius: 10px;
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .col-body {
+      background: #ede9fe;
+      border-radius: 0 0 8px 8px;
+      padding: 8px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      min-height: 160px;
+      transition: background .15s;
+    }
+
+    .col-body.drag-over {
+      background: #ddd6fe;
+      outline: 2px dashed #7c3aed;
+      outline-offset: -2px;
+    }
+
+    /* ─── CARDS ──────────────────────────────────────────── */
+    .card {
+      background: #fff;
+      border-radius: 7px;
+      padding: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.09);
+      cursor: grab;
+      user-select: none;
+      transition: box-shadow .15s, transform .1s;
+    }
+
+    .card:hover {
+      box-shadow: 0 3px 10px rgba(0,0,0,.14);
+    }
+
+    .card.dragging {
+      opacity: .45;
+      cursor: grabbing;
+    }
+
+    .card-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #1e1b4b;
+      margin-bottom: 5px;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-bottom: 7px;
+    }
+
+    .card-age {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      line-height: 1.4;
+    }
+
+    .badge-sc   { background: #dbeafe; color: #1d4ed8; }
+    .badge-pr   { background: #d1fae5; color: #065f46; }
+    .badge-ep   { background: #fef9c3; color: #713f12; }
+    .badge-fp   { background: #fce7f3; color: #9d174d; }
+
+    .badge-high     { background: #fee2e2; color: #991b1b; }
+    .badge-moderate { background: #fef3c7; color: #92400e; }
+    .badge-low      { background: #d1fae5; color: #065f46; }
+
+    .card-foot {
+      margin-top: 2px;
+    }
+
+    .card-foot-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10.5px;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, #7c3aed, #6d28d9);
+      border-radius: 2px;
+      transition: width .3s;
+    }
+
+    /* ─── ADD CARD BUTTON ────────────────────────────────── */
+    .add-card-btn {
+      margin-top: 2px;
+      padding: 6px;
+      width: 100%;
+      border: 1.5px dashed #a78bfa;
+      border-radius: 6px;
+      background: transparent;
+      color: #7c3aed;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+
+    .add-card-btn:hover { background: rgba(124,58,237,.07); }
+
+    /* ─── MODAL ──────────────────────────────────────────── */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay.open { display: flex; }
+
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      width: 460px;
+      max-width: 95vw;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,.3);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #1e1b4b;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #9ca3af;
+      line-height: 1;
+    }
+
+    .modal-close:hover { color: #111; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-group { margin-bottom: 14px; }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 8px 11px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color .15s;
+      background: #fff;
+    }
+
+    .form-control:focus { border-color: #7c3aed; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 10px;
+      background: #7c3aed;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background .15s;
+    }
+
+    .btn-submit:hover { background: #6d28d9; }
+
+    /* ─── TOAST ──────────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e1b4b;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .25s, transform .25s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ─── SCROLLBAR ──────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #c4b5fd; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ──────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-top">
+    <div class="org-block">
+      <div class="org-icon">S</div>
+      <div class="org-name">Singapore<br>Cancer Society</div>
+    </div>
+    <div class="pipeline-block">
+      <div class="pipeline-title">Mammowa Prospect Pipeline</div>
+      <div class="pipeline-sub">Mammowa Mammogram Management Trainee</div>
+    </div>
+    <div class="header-actions">
+      <div class="search-wrap">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="9" cy="9" r="6"/><line x1="14" y1="14" x2="19" y2="19"/>
+        </svg>
+        <input id="searchInput" type="text" placeholder="Search by name…" />
+      </div>
+      <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
+      <button class="btn btn-primary" onclick="openModal()">+ Add Prospect</button>
+    </div>
+  </div>
+  <div class="stats-bar" id="statsBar"></div>
+</header>
+
+<!-- ─── BOARD ───────────────────────────────────────────── -->
+<main class="board" id="board"></main>
+
+<!-- ─── ADD / EDIT MODAL ────────────────────────────────── -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Add Prospect</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <form id="prospectForm" onsubmit="submitForm(event)">
+      <input type="hidden" id="editId" />
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input class="form-control" id="fName" required placeholder="e.g. Hamidah Bte Yusof" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Age *</label>
+          <input class="form-control" id="fAge" type="number" min="18" max="120" required placeholder="e.g. 50" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Citizenship</label>
+          <select class="form-control" id="fCitizenship">
+            <option value="SC">SC – Singapore Citizen</option>
+            <option value="PR">PR – Permanent Resident</option>
+            <option value="EP">EP – Employment Pass</option>
+            <option value="FP">FP – Foreign Permit</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Risk Level</label>
+          <select class="form-control" id="fRisk">
+            <option value="Low">Low</option>
+            <option value="Moderate" selected>Moderate</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Pipeline Stage</label>
+          <select class="form-control" id="fStage">
+            <option value="Unaware">Unaware</option>
+            <option value="Aware">Aware</option>
+            <option value="Enquiring">Enquiring</option>
+            <option value="Qualified">Qualified</option>
+            <option value="Booked">Booked</option>
+            <option value="Screened">Screened</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tasks Completed</label>
+          <input class="form-control" id="fTasks" type="number" min="0" max="6" value="0" placeholder="0–6" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">First-Time Screener?</label>
+        <select class="form-control" id="fFirstTime">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes</label>
+        <input class="form-control" id="fNotes" placeholder="Optional notes…" />
+      </div>
+      <button type="submit" class="btn-submit">Save Prospect</button>
+    </form>
+  </div>
+</div>
+
+<!-- ─── TOAST ────────────────────────────────────────────── -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ─── DATA ──────────────────────────────────────────────────
+  const STAGES = ['Unaware', 'Aware', 'Enquiring', 'Qualified', 'Booked', 'Screened'];
+  const TOTAL_TASKS = 6;
+
+  // Stage-based conversion probability displayed on each card
+  const STAGE_PCT = { Unaware: 2, Aware: 8, Enquiring: 25, Qualified: 50, Booked: 75, Screened: 100 };
+
+  let prospects = [
+    { id: 1,  name: 'Hamidah Bte Yusof',       age: 50, citizenship: 'SC', risk: 'Moderate', stage: 'Unaware',   tasks: 4, firstTime: true,  notes: '' },
+    { id: 2,  name: 'Fatimah Bte Hashin',       age: 45, citizenship: 'SC', risk: 'Low',      stage: 'Unaware',   tasks: 4, firstTime: false, notes: '' },
+    { id: 3,  name: 'Priya d/o Subramaniam',    age: 41, citizenship: 'SC', risk: 'Moderate', stage: 'Aware',     tasks: 1, firstTime: true,  notes: '' },
+    { id: 4,  name: 'Lee Geok Eng',             age: 46, citizenship: 'SC', risk: 'Moderate', stage: 'Aware',     tasks: 1, firstTime: false, notes: '' },
+    { id: 5,  name: 'Lim Ah Kow',               age: 88, citizenship: 'PR', risk: 'Low',      stage: 'Enquiring', tasks: 2, firstTime: true,  notes: '' },
+    { id: 6,  name: 'Chan Xiao Hui',            age: 56, citizenship: 'SC', risk: 'Low',      stage: 'Enquiring', tasks: 3, firstTime: false, notes: '' },
+    { id: 7,  name: 'Siti Rahimah Bte Omar',    age: 43, citizenship: 'SC', risk: 'Moderate', stage: 'Qualified', tasks: 3, firstTime: true,  notes: '' },
+    { id: 8,  name: 'Nurul Ain Bte Rosli',      age: 38, citizenship: 'SC', risk: 'Low',      stage: 'Qualified', tasks: 4, firstTime: false, notes: '' },
+    { id: 9,  name: 'Tan Mei Ling',             age: 41, citizenship: 'SC', risk: 'High',     stage: 'Booked',    tasks: 5, firstTime: true,  notes: '' },
+    { id: 10, name: 'Kavitha Rajendran',        age: 52, citizenship: 'SC', risk: 'Moderate', stage: 'Booked',    tasks: 5, firstTime: false, notes: '' },
+    { id: 11, name: 'Wong Li Fang',             age: 48, citizenship: 'SC', risk: 'High',     stage: 'Screened',  tasks: 6, firstTime: true,  notes: '' },
+    { id: 12, name: 'Ng Boon Hwee',             age: 55, citizenship: 'SC', risk: 'High',     stage: 'Screened',  tasks: 6, firstTime: false, notes: '' },
+  ];
+
+  let nextId = 13;
+  let dragId = null;
+  let searchQuery = '';
+  let addingToStage = null;
+
+  // ─── RENDER ────────────────────────────────────────────────
+  function render() {
+    renderStats();
+    renderBoard();
+  }
+
+  function renderStats() {
+    const total     = prospects.length;
+    const booked    = prospects.filter(p => p.stage === 'Booked' || p.stage === 'Screened').length;
+    const screened  = prospects.filter(p => p.stage === 'Screened').length;
+    const highRisk  = prospects.filter(p => p.risk === 'High').length;
+    const firstTime = prospects.filter(p => p.firstTime).length;
+    const rate      = total ? Math.round((screened / total) * 100) : 0;
+
+    document.getElementById('statsBar').innerHTML = [
+      { v: total,     l: 'Total Prospects'     },
+      { v: booked,    l: 'Appointments Booked' },
+      { v: screened,  l: 'Screened'            },
+      { v: highRisk,  l: 'High Risk'           },
+      { v: firstTime, l: 'First-Time Screeners'},
+      { v: rate + '%',l: 'Conversion Rate'     },
+    ].map(s => `
+      <div class="stat">
+        <div class="stat-value">${s.v}</div>
+        <div class="stat-label">${s.l}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderBoard() {
+    const q = searchQuery.toLowerCase().trim();
+    const filtered = q ? prospects.filter(p => p.name.toLowerCase().includes(q)) : prospects;
+
+    document.getElementById('board').innerHTML = STAGES.map(stage => {
+      const cards = filtered.filter(p => p.stage === stage);
+      return `
+        <div class="column">
+          <div class="col-header">
+            ${stage}
+            <span class="col-count">${cards.length}</span>
+          </div>
+          <div class="col-body"
+            data-stage="${stage}"
+            ondragover="onDragOver(event)"
+            ondragleave="onDragLeave(event)"
+            ondrop="onDrop(event, '${stage}')">
+            ${cards.map(cardHTML).join('')}
+            <button class="add-card-btn" onclick="openModal('${stage}')">+ Add</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function cardHTML(p) {
+    const pct  = Math.round((p.tasks / TOTAL_TASKS) * 100);
+    const conv = STAGE_PCT[p.stage] || 0;
+    return `
+      <div class="card"
+        draggable="true"
+        data-id="${p.id}"
+        ondragstart="onDragStart(event, ${p.id})"
+        ondragend="onDragEnd(event)"
+        ondblclick="openEditModal(${p.id})">
+        <div class="card-name">${esc(p.name)}</div>
+        <div class="card-meta">
+          <span class="card-age">Age ${p.age}</span>
+          <span class="badge badge-${p.citizenship.toLowerCase()}">${p.citizenship}</span>
+          <span class="badge badge-${p.risk.toLowerCase()}">${p.risk} risk</span>
+        </div>
+        <div class="card-foot">
+          <div class="card-foot-row">
+            <span>${p.tasks}/${TOTAL_TASKS} tasks</span>
+            <span>${conv}%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${pct}%"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ─── DRAG & DROP ───────────────────────────────────────────
+  function onDragStart(e, id) {
+    dragId = id;
+    e.target.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  }
+
+  function onDragEnd(e) {
+    e.target.classList.remove('dragging');
+    document.querySelectorAll('.col-body').forEach(el => el.classList.remove('drag-over'));
+    dragId = null;
+  }
+
+  function onDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    e.currentTarget.classList.add('drag-over');
+  }
+
+  function onDragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+  }
+
+  function onDrop(e, stage) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag-over');
+    if (dragId !== null) {
+      const p = prospects.find(x => x.id === dragId);
+      if (p && p.stage !== stage) {
+        p.stage = stage;
+        // Auto-advance tasks when moving forward
+        const stageIdx = STAGES.indexOf(stage);
+        const minTasks = stageIdx; // rough minimum
+        if (p.tasks < minTasks) p.tasks = minTasks;
+        toast(`Moved ${p.name} → ${stage}`);
+        render();
+      }
+    }
+  }
+
+  // ─── MODAL ─────────────────────────────────────────────────
+  function openModal(stage) {
+    addingToStage = stage || 'Unaware';
+    document.getElementById('modalTitle').textContent = 'Add Prospect';
+    document.getElementById('editId').value = '';
+    document.getElementById('prospectForm').reset();
+    document.getElementById('fStage').value = addingToStage;
+    document.getElementById('overlay').classList.add('open');
+  }
+
+  function openEditModal(id) {
+    const p = prospects.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('modalTitle').textContent = 'Edit Prospect';
+    document.getElementById('editId').value = id;
+    document.getElementById('fName').value        = p.name;
+    document.getElementById('fAge').value         = p.age;
+    document.getElementById('fCitizenship').value = p.citizenship;
+    document.getElementById('fRisk').value        = p.risk;
+    document.getElementById('fStage').value       = p.stage;
+    document.getElementById('fTasks').value       = p.tasks;
+    document.getElementById('fFirstTime').value   = p.firstTime;
+    document.getElementById('fNotes').value       = p.notes;
+    document.getElementById('overlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('overlay').classList.remove('open');
+  }
+
+  function submitForm(e) {
+    e.preventDefault();
+    const editId = document.getElementById('editId').value;
+    const data = {
+      name:        document.getElementById('fName').value.trim(),
+      age:         parseInt(document.getElementById('fAge').value),
+      citizenship: document.getElementById('fCitizenship').value,
+      risk:        document.getElementById('fRisk').value,
+      stage:       document.getElementById('fStage').value,
+      tasks:       parseInt(document.getElementById('fTasks').value) || 0,
+      firstTime:   document.getElementById('fFirstTime').value === 'true',
+      notes:       document.getElementById('fNotes').value.trim(),
+    };
+
+    if (editId) {
+      const idx = prospects.findIndex(p => p.id === parseInt(editId));
+      if (idx !== -1) { prospects[idx] = { ...prospects[idx], ...data }; toast('Prospect updated.'); }
+    } else {
+      prospects.push({ id: nextId++, ...data });
+      toast(`${data.name} added.`);
+    }
+
+    closeModal();
+    render();
+  }
+
+  // ─── EXPORT CSV ────────────────────────────────────────────
+  function exportCSV() {
+    const cols = ['ID','Name','Age','Citizenship','Risk','Stage','Tasks Completed','First-Time Screener','Notes'];
+    const rows = prospects.map(p => [
+      p.id, `"${p.name}"`, p.age, p.citizenship, p.risk, p.stage, p.tasks, p.firstTime ? 'Yes' : 'No', `"${p.notes}"`
+    ]);
+    const csv = [cols.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `mammowa-pipeline-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('CSV exported.');
+  }
+
+  // ─── SEARCH ────────────────────────────────────────────────
+  document.getElementById('searchInput').addEventListener('input', function() {
+    searchQuery = this.value;
+    renderBoard();
+  });
+
+  // Close modal on overlay click
+  document.getElementById('overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // ─── TOAST ─────────────────────────────────────────────────
+  let toastTimer;
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+  }
+
+  // ─── HELPERS ───────────────────────────────────────────────
+  function esc(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ─── INIT ──────────────────────────────────────────────────
+  render();
+</script>
+</body>
+</html>
