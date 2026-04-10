@@ -6,13 +6,11 @@
 <title>Mammobus Prospect Pipeline</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --p:#4B2D83;--pd:#3a2268;--pm:#6B4DA0;--pl:#8E6DBF;
-  --lav:#E8E0F5;--lav2:#F4F0FA;--w:#fff;
-  --tx:#2D1A50;--txm:#5a4a7a;--txl:#9080b0;
-  --br:#D5C8ED;--bg:#F7F4FD;
-}
+:root{--p:#4B2D83;--pd:#3a2268;--pm:#6B4DA0;--pl:#8E6DBF;--lav:#E8E0F5;--lav2:#F4F0FA;--w:#fff;--tx:#2D1A50;--txm:#5a4a7a;--txl:#9080b0;--br:#D5C8ED;--bg:#F7F4FD;}
 body{font-family:Arial,sans-serif;background:var(--bg);color:var(--tx);font-size:13px}
+/* spacer */
+.top-spacer{height:80px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:11px;color:#c0b8d4;letter-spacing:.05em;border-bottom:1px solid var(--lav)}
+/* header */
 header{background:var(--p);padding:0 20px;display:flex;align-items:stretch;justify-content:space-between;flex-wrap:wrap}
 .hleft{display:flex;align-items:center;gap:14px;padding:12px 0}
 .logo-icon{width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -29,11 +27,20 @@ header{background:var(--p);padding:0 20px;display:flex;align-items:stretch;justi
 .btn.ol{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5)}
 .btn.ol:hover{background:rgba(255,255,255,.1)}
 .btn.danger{background:#fff;color:#8B1A1A;border:1.5px solid #C84040}
+/* stats */
 .stats{display:flex;gap:8px;padding:10px 20px;background:var(--pd);flex-wrap:wrap}
-.stat{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:8px 14px;min-width:95px;text-align:center}
+.stat{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.15);border-radius:6px;padding:8px 14px;min-width:95px;text-align:center;cursor:pointer;transition:.15s;user-select:none}
+.stat:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
+.stat.active{background:rgba(255,255,255,.28);border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.3)}
 .stat-n{font-size:20px;font-weight:700;color:#fff}
 .stat-l{font-size:10px;color:rgba(255,255,255,.6);margin-top:2px}
-.board{display:flex;gap:10px;padding:14px 20px;overflow-x:auto;align-items:flex-start;min-height:calc(100vh - 170px)}
+.filter-bar{display:flex;align-items:center;gap:8px;padding:6px 20px;background:var(--p);border-bottom:1px solid var(--lav);flex-wrap:wrap}
+.filter-label{font-size:11px;color:rgba(255,255,255,.7)}
+.filter-tag{font-size:11px;font-weight:600;background:rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:12px;display:flex;align-items:center;gap:5px}
+.filter-clear{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:13px;line-height:1;padding:0}
+.filter-clear:hover{color:#fff}
+/* board */
+.board{display:flex;gap:10px;padding:14px 20px;overflow-x:auto;align-items:flex-start;min-height:calc(100vh - 220px)}
 .col{flex:0 0 215px;background:#fff;border-radius:8px;border:1px solid var(--br);overflow:hidden}
 .col-hd{padding:9px 12px;font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center;color:#fff}
 .col-cnt{background:rgba(255,255,255,.25);border-radius:10px;padding:1px 7px;font-size:11px}
@@ -43,19 +50,21 @@ header{background:var(--p);padding:0 20px;display:flex;align-items:stretch;justi
 .card-top{padding:10px 10px 6px}
 .card-name{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:2px}
 .card-meta{font-size:11px;color:var(--txl)}
-.card-mid{padding:4px 10px 6px;display:flex;gap:5px;flex-wrap:wrap}
+.card-mid{padding:4px 10px 4px;display:flex;gap:5px;flex-wrap:wrap}
 .tag{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;background:var(--lav);color:var(--p)}
 .tag.hi{background:#F5E8E8;color:#7A1A1A}
 .tag.mo{background:#FBF0E0;color:#6B4000}
 .tag.lo{background:#E8F5EE;color:#1A5C36}
-.card-prog{padding:2px 10px 10px}
+.card-prog{padding:4px 10px 8px}
 .prog-lbl{font-size:10px;color:var(--txl);margin-bottom:3px}
-.prog-bar{height:4px;background:var(--lav);border-radius:2px;overflow:hidden}
+.prog-bar{height:4px;background:var(--lav);border-radius:2px;overflow:hidden;margin-bottom:4px}
 .prog-fill{height:100%;border-radius:2px;background:var(--p);transition:width .3s}
+.review-badge{font-size:10px;padding:2px 6px;border-radius:4px;display:inline-flex;align-items:center;gap:3px;margin-top:2px}
+.review-badge.due{background:#F5E8E8;color:#7A1A1A}
+.review-badge.ok{background:#E8F5EE;color:#1A5C36}
 .add-card{background:none;border:1.5px dashed var(--br);border-radius:6px;width:100%;padding:8px;color:var(--txl);font-size:12px;cursor:pointer;margin-top:2px;transition:.15s}
 .add-card:hover{border-color:var(--p);color:var(--p)}
-
-/* ── Modal ── */
+/* modal */
 .ov{position:fixed;inset:0;background:rgba(45,26,80,.5);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto}
 .ov.open{display:flex}
 .modal{background:#fff;border-radius:10px;width:100%;max-width:920px;margin:auto;border:1px solid var(--br);display:flex;flex-direction:column;max-height:calc(100vh - 32px)}
@@ -63,7 +72,7 @@ header{background:var(--p);padding:0 20px;display:flex;align-items:stretch;justi
 .mhd h2{font-size:14px;font-weight:700}
 .mclose{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;opacity:.8;line-height:1}
 .mclose:hover{opacity:1}
-.mbody{display:flex;gap:0;flex:1;overflow:hidden}
+.mbody{display:flex;flex:1;overflow:hidden}
 .mcol-l{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;border-right:1px solid var(--br)}
 .mcol-r{width:280px;flex-shrink:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--lav2)}
 .msec{background:#fff;border:1px solid var(--br);border-radius:8px;padding:14px}
@@ -75,6 +84,7 @@ header{background:var(--p);padding:0 20px;display:flex;align-items:stretch;justi
 .fg input,.fg select,.fg textarea{border:1px solid var(--br);border-radius:4px;padding:6px 8px;font-size:12px;font-family:Arial,sans-serif;color:var(--tx);width:100%}
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--p)}
 .fg textarea{resize:vertical;min-height:80px}
+.fg input[readonly]{background:var(--lav2);cursor:default}
 .stage-sel{display:flex;gap:6px;flex-wrap:wrap}
 .stbtn{border:1.5px solid var(--br);border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;background:#fff;color:var(--txm);font-weight:600;transition:.15s}
 .stbtn:hover{border-color:var(--p);color:var(--p)}
@@ -87,8 +97,7 @@ header{background:var(--p);padding:0 20px;display:flex;align-items:stretch;justi
 .chk-item input[type=checkbox]{margin-top:2px;accent-color:var(--p);width:14px;height:14px;flex-shrink:0;cursor:pointer}
 .chk-item label{font-size:12px;color:var(--tx);cursor:pointer;line-height:1.4}
 .chk-item label.done{text-decoration:line-through;color:var(--txl)}
-
-/* ── Upload ── */
+/* upload */
 .upzone{border:2px dashed var(--br);border-radius:8px;padding:20px 12px;text-align:center;cursor:pointer;transition:.2s;background:#fff;margin-bottom:10px}
 .upzone:hover,.upzone.drag{border-color:var(--p);background:var(--lav)}
 .upzone svg{display:block;margin:0 auto 8px;opacity:.5}
@@ -106,15 +115,16 @@ header{background:var(--p);padding:0 20px;display:flex;align-items:stretch;justi
 .fbtn:hover{background:var(--lav);color:var(--p)}
 .fbtn.del:hover{background:#FEF0F0;color:#8B1A1A}
 .ubadge{font-size:9px;background:#FAEEDA;color:#633806;padding:1px 5px;border-radius:8px;margin-left:4px}
+.empty-files{font-size:11px;color:var(--txl);text-align:center;padding:8px 0}
 .imgprev{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
 .imgprev img{max-width:92%;max-height:92vh;border-radius:8px}
 .imgprev-close{position:fixed;top:14px;right:18px;background:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#333;font-weight:700}
-.empty-files{font-size:11px;color:var(--txl);text-align:center;padding:8px 0}
 </style>
 </head>
 <body>
 
-<div style="height:80px;background:#F7F4FD;display:flex;align-items:center;justify-content:center;font-size:11px;color:#c0b8d4;letter-spacing:.05em;border-bottom:1px solid #E8E0F5;">&#8595; Scroll down to view the Mammobus Pipeline Tracker &#8595;</div>
+<div class="top-spacer">&#8595;&nbsp; Scroll down to view the Mammobus Pipeline Tracker &nbsp;&#8595;</div>
+
 <header>
   <div class="hleft">
     <div style="display:flex;align-items:center;gap:10px">
@@ -137,15 +147,12 @@ header{background:var(--p);padding:0 20px;display:flex;align-items:stretch;justi
 </header>
 
 <div class="stats" id="stats-bar"></div>
+<div class="filter-bar" id="filter-bar" style="display:none"></div>
 <div class="board" id="board"></div>
 
-<!-- Modal -->
 <div class="ov" id="ov" onclick="ovClick(event)">
   <div class="modal">
-    <div class="mhd">
-      <h2 id="modal-title">Prospect</h2>
-      <button class="mclose" onclick="closeModal()">&#x2715;</button>
-    </div>
+    <div class="mhd"><h2 id="modal-title">Prospect</h2><button class="mclose" onclick="closeModal()">&#x2715;</button></div>
     <div class="mbody">
       <div class="mcol-l" id="mcol-l"></div>
       <div class="mcol-r" id="mcol-r"></div>
@@ -178,40 +185,86 @@ const CL={
   screened:['Attendance confirmed on screening day','Screening completed without issues','Results communication timeline explained','Results sent / received by participant','Abnormal results — referral pathway activated','Normal results — next screening date communicated','Participant satisfaction / feedback collected','Peer referral ask made (refer a friend)','Re-engagement reminder set (12 or 24 months)','Record updated in system'],
 };
 
+const PERIOD_LABELS={'6m':'6 months','1y':'1 year','3y':'3 years','5y':'5 years'};
+
 let prospects=[
-  {id:1, name:'Tan Mei Ling',          age:52,nric:'S****567A',status:'SC',risk:'High',    stage:'booked',    first:true, notes:'Family history — mother had breast cancer. Very motivated. Prefers morning slot.',checks:{booked:[true,true,true,false,false,true,false,false]},files:[]},
-  {id:2, name:'Siti Rahimah Bte Omar', age:45,nric:'S****234B',status:'SC',risk:'Moderate',stage:'qualified', first:false,notes:'Enrolled in Healthier SG. Prefers Malay-speaking coordinator. CHAS Orange.',checks:{qualified:[true,true,true,true,true,false,false,false,false,false]},files:[]},
-  {id:3, name:'Lim Ah Kow',            age:48,nric:'S****891C',status:'PR',risk:'Low',     stage:'enquiring', first:true, notes:'Came from void deck flyer. Needs Mandarin support.',checks:{enquiring:[true,true,true,true,true,false,false,false,false,false]},files:[]},
-  {id:4, name:'Priya d/o Subramaniam', age:41,nric:'S****445D',status:'SC',risk:'Low',     stage:'aware',     first:true, notes:'Afraid of results. Referred to BCF counsellor. Follow up in 2 weeks.',checks:{},files:[]},
-  {id:5, name:'Wong Li Fang',          age:55,nric:'S****320E',status:'SC',risk:'High',    stage:'screened',  first:false,notes:'Results normal. Re-engagement reminder set for March 2027.',checks:{screened:[true,true,true,true,true,true,true,true,true,true]},files:[]},
-  {id:6, name:'Hamidah Bte Yusof',     age:50,nric:'S****776F',status:'SC',risk:'Moderate',stage:'unaware',   first:true, notes:'Met at Bishan CC community event. Interested but no contact taken yet.',checks:{},files:[]},
-  {id:7, name:'Ng Boon Hwee',          age:60,nric:'S****103G',status:'SC',risk:'High',    stage:'screened',  first:false,notes:'Results showed calcification — referred to NCCS for follow-up.',checks:{screened:[true,true,true,true,false,false,true,false,true,false]},files:[]},
-  {id:8, name:'Kavitha Rajendran',     age:43,nric:'S****558H',status:'SC',risk:'Moderate',stage:'booked',    first:true, notes:'Workplace booking via Changi Airport Group event. Confirmed slot 15 Apr.',checks:{booked:[true,true,false,true,false,false,false,false]},files:[]},
-  {id:9, name:'Chen Xiao Hui',         age:47,nric:'S****299J',status:'PR',risk:'Low',     stage:'enquiring', first:true, notes:'Heard from colleague. Unsure about PR subsidy rates. Mandarin preferred.',checks:{enquiring:[true,true,true,false,true,true,true,false,false,false]},files:[]},
-  {id:10,name:'Nurul Ain Bte Rosli',   age:53,nric:'S****641K',status:'SC',risk:'High',    stage:'qualified', first:false,notes:'Had a scare 3 years ago — benign cyst. Overdue for screening. Very cooperative.',checks:{qualified:[true,true,true,true,true,true,true,true,false,false]},files:[]},
-  {id:11,name:'Lee Geok Eng',          age:66,nric:'S****088L',status:'SC',risk:'Moderate',stage:'aware',     first:false,notes:'Referred by daughter. Last screened 3 years ago. Needs reminder on procedure.',checks:{aware:[true,true,false,false,false,false]},files:[]},
-  {id:12,name:'Fatimah Bte Hashim',    age:44,nric:'S****714M',status:'SC',risk:'Low',     stage:'unaware',   first:true, notes:'Spotted at Geylang Serai Bazaar booth. Left contact number.',checks:{},files:[]},
+  {id:1, name:'Tan Mei Ling',          age:52,nric:'S****567A',status:'SC',risk:'High',    stage:'booked',    first:true, reviewPeriod:'1y', reviewDate:'2027-04-09',notes:'Family history — mother had breast cancer. Very motivated.',checks:{booked:[true,true,true,false,false,true,false,false]},files:[]},
+  {id:2, name:'Siti Rahimah Bte Omar', age:45,nric:'S****234B',status:'SC',risk:'Moderate',stage:'qualified', first:false,reviewPeriod:'1y', reviewDate:'2027-04-09',notes:'Enrolled in Healthier SG. Prefers Malay-speaking coordinator.',checks:{qualified:[true,true,true,true,true,false,false,false,false,false]},files:[]},
+  {id:3, name:'Lim Ah Kow',            age:48,nric:'S****891C',status:'PR',risk:'Low',     stage:'enquiring', first:true, reviewPeriod:'6m', reviewDate:'2026-10-09',notes:'Came from void deck flyer. Needs Mandarin support.',checks:{enquiring:[true,true,true,true,true,false,false,false,false,false]},files:[]},
+  {id:4, name:'Priya d/o Subramaniam', age:41,nric:'S****445D',status:'SC',risk:'Low',     stage:'aware',     first:true, reviewPeriod:'',   reviewDate:'',           notes:'Afraid of results. Referred to BCF counsellor.',checks:{},files:[]},
+  {id:5, name:'Wong Li Fang',          age:55,nric:'S****320E',status:'SC',risk:'High',    stage:'screened',  first:false,reviewPeriod:'2y', reviewDate:'2028-04-09',notes:'Results normal. Re-engagement set for 2027.',checks:{screened:[true,true,true,true,true,true,true,true,true,true]},files:[]},
+  {id:6, name:'Hamidah Bte Yusof',     age:50,nric:'S****776F',status:'SC',risk:'Moderate',stage:'unaware',   first:true, reviewPeriod:'',   reviewDate:'',           notes:'Met at Bishan CC community event.',checks:{},files:[]},
+  {id:7, name:'Ng Boon Hwee',          age:60,nric:'S****103G',status:'SC',risk:'High',    stage:'screened',  first:false,reviewPeriod:'6m', reviewDate:'2026-10-09',notes:'Results showed calcification — referred to NCCS.',checks:{screened:[true,true,true,true,false,false,true,false,true,false]},files:[]},
+  {id:8, name:'Kavitha Rajendran',     age:43,nric:'S****558H',status:'SC',risk:'Moderate',stage:'booked',    first:true, reviewPeriod:'1y', reviewDate:'2027-04-09',notes:'Workplace booking via Changi Airport Group. Confirmed 15 Apr.',checks:{booked:[true,true,false,true,false,false,false,false]},files:[]},
+  {id:9, name:'Chen Xiao Hui',         age:47,nric:'S****299J',status:'PR',risk:'Low',     stage:'enquiring', first:true, reviewPeriod:'6m', reviewDate:'2026-10-09',notes:'Heard from colleague. Unsure about PR subsidy rates.',checks:{enquiring:[true,true,true,false,true,true,true,false,false,false]},files:[]},
+  {id:10,name:'Nurul Ain Bte Rosli',   age:53,nric:'S****641K',status:'SC',risk:'High',    stage:'qualified', first:false,reviewPeriod:'1y', reviewDate:'2027-04-09',notes:'Had a scare 3 years ago — benign cyst. Overdue for screening.',checks:{qualified:[true,true,true,true,true,true,true,true,false,false]},files:[]},
+  {id:11,name:'Lee Geok Eng',          age:66,nric:'S****088L',status:'SC',risk:'Moderate',stage:'aware',     first:false,reviewPeriod:'',   reviewDate:'',           notes:'Referred by daughter. Last screened 3 years ago.',checks:{aware:[true,true,false,false,false,false]},files:[]},
+  {id:12,name:'Fatimah Bte Hashim',    age:44,nric:'S****714M',status:'SC',risk:'Low',     stage:'unaware',   first:true, reviewPeriod:'',   reviewDate:'',           notes:'Spotted at Geylang Serai Bazaar booth.',checks:{},files:[]},
 ];
-let nextId=13, editId=null, filterTerm='', pendingFiles=[];
+let nextId=13,editId=null,filterTerm='',pendingFiles=[],activeFilter=null;
+
+// filter definitions
+const FILTERS={
+  total:     {label:'All prospects',       fn:()=>true},
+  booked:    {label:'Appointments booked', fn:p=>p.stage==='booked'},
+  screened:  {label:'Screened',            fn:p=>p.stage==='screened'},
+  highrisk:  {label:'High risk',           fn:p=>p.risk==='High'},
+  firsttime: {label:'First-time screeners',fn:p=>p.first===true},
+  conversion:{label:'Screened',            fn:p=>p.stage==='screened'},
+};
 
 function getChecks(p,st){
-  if(!p.checks) p.checks={};
-  if(!p.checks[st]) p.checks[st]=CL[st].map(()=>false);
-  while(p.checks[st].length<CL[st].length) p.checks[st].push(false);
+  if(!p.checks)p.checks={};
+  if(!p.checks[st])p.checks[st]=CL[st].map(()=>false);
+  while(p.checks[st].length<CL[st].length)p.checks[st].push(false);
   return p.checks[st];
 }
 function progOf(p,st){const c=getChecks(p,st),d=c.filter(Boolean).length;return{d,t:c.length,pct:Math.round(d/c.length*100)};}
 function fmtSz(b){return b>1048576?(b/1048576).toFixed(1)+' MB':(b/1024).toFixed(0)+' KB';}
-function ext(n){return(n.split('.').pop()||'').toUpperCase().slice(0,4);}
+function extOf(n){return(n.split('.').pop()||'').toUpperCase().slice(0,4);}
 function isImg(t){return t&&t.startsWith('image/');}
 
+function fmtDate(d){
+  if(!d)return'';
+  const [y,m,dy]=d.split('-');
+  return `${dy}/${m}/${y}`;
+}
+function isOverdue(d){
+  if(!d)return false;
+  return new Date(d)<new Date();
+}
+
 /* ── Board ── */
+function setFilter(key){
+  activeFilter = activeFilter===key ? null : key;
+  renderStats();
+  renderBoard();
+  const fb=document.getElementById('filter-bar');
+  if(activeFilter){
+    fb.style.display='flex';
+    fb.innerHTML=`<span class="filter-label">Filtering by:</span>
+      <span class="filter-tag">${FILTERS[activeFilter].label}
+        <button class="filter-clear" onclick="clearFilter()">&#x2715;</button>
+      </span>`;
+  } else {
+    fb.style.display='none';
+  }
+}
+
+function clearFilter(){
+  activeFilter=null;
+  renderStats();
+  renderBoard();
+  document.getElementById('filter-bar').style.display='none';
+}
+
 function renderBoard(){
   const board=document.getElementById('board');
   board.innerHTML='';
   const term=filterTerm.toLowerCase();
+  const filterFn=activeFilter?FILTERS[activeFilter].fn:()=>true;
   STAGES.forEach(st=>{
-    const items=prospects.filter(p=>p.stage===st.id&&(!term||p.name.toLowerCase().includes(term)));
+    const items=prospects.filter(p=>p.stage===st.id&&(!term||p.name.toLowerCase().includes(term))&&filterFn(p));
     const col=document.createElement('div');
     col.className='col';
     col.innerHTML=`<div class="col-hd" style="background:${st.shade}">${st.label}<span class="col-cnt">${items.length}</span></div>
@@ -220,22 +273,46 @@ function renderBoard(){
   });
   renderStats();
 }
+
 function cardHTML(p,st){
   const pg=progOf(p,p.stage);
   const rc=p.risk==='High'?'hi':p.risk==='Moderate'?'mo':'lo';
+  const hasReview=p.reviewDate&&p.reviewDate!=='';
+  const overdue=isOverdue(p.reviewDate);
+  const reviewHTML=hasReview
+    ?`<div class="review-badge ${overdue?'due':'ok'}">&#128197; ${PERIOD_LABELS[p.reviewPeriod]||p.reviewPeriod} &nbsp;&middot;&nbsp; ${fmtDate(p.reviewDate)}</div>`
+    :'';
+  const fileCount=(p.files&&p.files.length)?`<span class="tag" style="background:#EEE8FF">&#128206; ${p.files.length}</span>`:'';
   return `<div class="card" onclick="openEdit(${p.id})">
-    <div class="card-top"><div class="card-name">${p.name}</div><div class="card-meta">Age ${p.age} · ${p.status}${p.first?' · ★ First':''}</div></div>
-    <div class="card-mid"><span class="tag">${p.status}</span><span class="tag ${rc}">${p.risk} risk</span>${(p.files&&p.files.length)?`<span class="tag" style="background:#EEE8FF">&#128206; ${p.files.length}</span>`:''}</div>
-    <div class="card-prog"><div class="prog-lbl">${pg.d}/${pg.t} tasks · ${pg.pct}%</div><div class="prog-bar"><div class="prog-fill" style="width:${pg.pct}%;background:${st.shade}"></div></div></div>
+    <div class="card-top"><div class="card-name">${p.name}</div><div class="card-meta">Age ${p.age} &middot; ${p.status}${p.first?' &middot; &#9733; First':''}</div></div>
+    <div class="card-mid"><span class="tag">${p.status}</span><span class="tag ${rc}">${p.risk} risk</span>${fileCount}</div>
+    <div class="card-prog">
+      <div class="prog-lbl">${pg.d}/${pg.t} tasks &middot; ${pg.pct}%</div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pg.pct}%;background:${st.shade}"></div></div>
+      ${reviewHTML}
+    </div>
   </div>`;
 }
+
 function renderStats(){
   const t=prospects.length,bk=prospects.filter(p=>p.stage==='booked').length,sc=prospects.filter(p=>p.stage==='screened').length,hi=prospects.filter(p=>p.risk==='High').length,fi=prospects.filter(p=>p.first).length;
-  document.getElementById('stats-bar').innerHTML=[{n:t,l:'Total prospects'},{n:bk,l:'Appointments booked'},{n:sc,l:'Screened'},{n:hi,l:'High risk'},{n:fi,l:'First-time screeners'},{n:Math.round(sc/Math.max(t,1)*100)+'%',l:'Conversion rate'}]
-    .map(s=>`<div class="stat"><div class="stat-n">${s.n}</div><div class="stat-l">${s.l}</div></div>`).join('');
+  const stats=[
+    {key:'total',     n:t,                                      l:'Total prospects'},
+    {key:'booked',    n:bk,                                     l:'Appointments booked'},
+    {key:'screened',  n:sc,                                     l:'Screened'},
+    {key:'highrisk',  n:hi,                                     l:'High risk'},
+    {key:'firsttime', n:fi,                                     l:'First-time screeners'},
+    {key:'conversion',n:Math.round(sc/Math.max(t,1)*100)+'%',  l:'Conversion rate'},
+  ];
+  document.getElementById('stats-bar').innerHTML=stats.map(s=>
+    `<div class="stat ${activeFilter===s.key?'active':''}" onclick="setFilter('${s.key}')">
+      <div class="stat-n">${s.n}</div>
+      <div class="stat-l">${s.l}</div>
+    </div>`
+  ).join('');
 }
 
-/* ── Modal build ── */
+/* ── Modal ── */
 function buildLeft(p,st){
   const checks=p?getChecks(p,st):CL[st].map(()=>false);
   const done=checks.filter(Boolean).length;
@@ -264,6 +341,20 @@ function buildLeft(p,st){
         <option value="1" ${p&&p.first? 'selected':''}>Yes</option>
         <option value="0" ${p&&!p.first?'selected':''}>No</option>
       </select></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Review period</label>
+        <select id="f-period" onchange="calcReviewDate()">
+          <option value="" ${!p||!p.reviewPeriod?'selected':''}>-- Select --</option>
+          <option value="6m" ${p&&p.reviewPeriod==='6m'?'selected':''}>6 months</option>
+          <option value="1y" ${p&&p.reviewPeriod==='1y'?'selected':''}>1 year</option>
+          <option value="3y" ${p&&p.reviewPeriod==='3y'?'selected':''}>3 years</option>
+          <option value="5y" ${p&&p.reviewPeriod==='5y'?'selected':''}>5 years</option>
+        </select>
+      </div>
+      <div class="fg"><label>Next review date</label>
+        <input id="f-review" type="date" value="${p&&p.reviewDate?p.reviewDate:''}" readonly>
+      </div>
     </div>
   </div>
   <div class="msec">
@@ -294,32 +385,36 @@ function buildRight(p){
         <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
       </svg>
       <p>Click or drag &amp; drop</p>
-      <small>Images · PDF · Word · Excel · TXT<br>Max 10 MB per file</small>
+      <small>Images &middot; PDF &middot; Word &middot; Excel &middot; TXT<br>Max 10 MB per file</small>
     </div>
     <div class="flist" id="flist"></div>
   </div>`;
 }
 
+function calcReviewDate(){
+  const v=document.getElementById('f-period').value;
+  const rd=document.getElementById('f-review');
+  if(!v){rd.value='';return;}
+  const d=new Date();
+  if(v==='6m')d.setMonth(d.getMonth()+6);
+  else if(v==='1y')d.setFullYear(d.getFullYear()+1);
+  else if(v==='3y')d.setFullYear(d.getFullYear()+3);
+  else if(v==='5y')d.setFullYear(d.getFullYear()+5);
+  rd.value=d.toISOString().split('T')[0];
+}
+
 function renderFileList(){
-  const el=document.getElementById('flist');
-  if(!el) return;
+  const el=document.getElementById('flist');if(!el)return;
   const p=editId?prospects.find(x=>x.id===editId):null;
   const saved=(p&&p.files)||[];
   const all=[...saved,...pendingFiles];
   if(!all.length){el.innerHTML=`<div class="empty-files">No files attached yet.</div>`;return;}
   el.innerHTML=all.map((f,i)=>{
     const isPend=i>=saved.length;
-    const thumb=isImg(f.type)?`<img class="fthumb" src="${f.dataUrl}" alt="${f.name}">`:`<div class="ficon">${ext(f.name)}</div>`;
+    const thumb=isImg(f.type)?`<img class="fthumb" src="${f.dataUrl}" alt="${f.name}">`:`<div class="ficon">${extOf(f.name)}</div>`;
     const badge=isPend?`<span class="ubadge">unsaved</span>`:'';
-    return `<div class="fitem">
-      ${thumb}
-      <div class="finfo"><div class="fname">${f.name}${badge}</div><div class="fmeta">${fmtSz(f.size)}</div></div>
-      <div class="fbtns">
-        <button class="fbtn" onclick="viewFile(${i})" title="View">&#128065;</button>
-        <button class="fbtn" onclick="dlFile(${i})" title="Download">&#8681;</button>
-        <button class="fbtn del" onclick="rmFile(${i})" title="Remove">&#x2715;</button>
-      </div>
-    </div>`;
+    return `<div class="fitem">${thumb}<div class="finfo"><div class="fname">${f.name}${badge}</div><div class="fmeta">${fmtSz(f.size)}</div></div>
+      <div class="fbtns"><button class="fbtn" onclick="viewFile(${i})">&#128065;</button><button class="fbtn" onclick="dlFile(${i})">&#8681;</button><button class="fbtn del" onclick="rmFile(${i})">&#x2715;</button></div></div>`;
   }).join('');
 }
 
@@ -335,31 +430,14 @@ function handleFiles(fl){
 function dOver(e){e.preventDefault();document.getElementById('upzone').classList.add('drag');}
 function dLeave(){document.getElementById('upzone').classList.remove('drag');}
 function dDrop(e){e.preventDefault();dLeave();handleFiles(e.dataTransfer.files);}
-
 function viewFile(i){
   const p=editId?prospects.find(x=>x.id===editId):null;
-  const all=[...(p&&p.files||[]),...pendingFiles];
-  const f=all[i]; if(!f) return;
-  if(isImg(f.type)){
-    const ov=document.createElement('div');ov.className='imgprev';
-    ov.innerHTML=`<button class="imgprev-close" onclick="this.parentNode.remove()">&#x2715;</button><img src="${f.dataUrl}" alt="${f.name}">`;
-    ov.onclick=e=>{if(e.target===ov)ov.remove();};
-    document.body.appendChild(ov);
-  } else { const a=document.createElement('a');a.href=f.dataUrl;a.target='_blank';a.click(); }
+  const all=[...(p&&p.files||[]),...pendingFiles];const f=all[i];if(!f)return;
+  if(isImg(f.type)){const ov=document.createElement('div');ov.className='imgprev';ov.innerHTML=`<button class="imgprev-close" onclick="this.parentNode.remove()">&#x2715;</button><img src="${f.dataUrl}" alt="${f.name}">`;ov.onclick=e=>{if(e.target===ov)ov.remove();};document.body.appendChild(ov);}
+  else{const a=document.createElement('a');a.href=f.dataUrl;a.target='_blank';a.click();}
 }
-function dlFile(i){
-  const p=editId?prospects.find(x=>x.id===editId):null;
-  const all=[...(p&&p.files||[]),...pendingFiles];
-  const f=all[i]; if(!f) return;
-  const a=document.createElement('a');a.href=f.dataUrl;a.download=f.name;a.click();
-}
-function rmFile(i){
-  const p=editId?prospects.find(x=>x.id===editId):null;
-  const saved=(p&&p.files)||[];
-  if(i<saved.length){if(!confirm('Remove "'+saved[i].name+'"?'))return;saved.splice(i,1);if(p)p.files=saved;}
-  else pendingFiles.splice(i-saved.length,1);
-  renderFileList();
-}
+function dlFile(i){const p=editId?prospects.find(x=>x.id===editId):null;const all=[...(p&&p.files||[]),...pendingFiles];const f=all[i];if(!f)return;const a=document.createElement('a');a.href=f.dataUrl;a.download=f.name;a.click();}
+function rmFile(i){const p=editId?prospects.find(x=>x.id===editId):null;const saved=(p&&p.files)||[];if(i<saved.length){if(!confirm('Remove "'+saved[i].name+'"?'))return;saved.splice(i,1);if(p)p.files=saved;}else pendingFiles.splice(i-saved.length,1);renderFileList();}
 
 function switchStage(stId){
   const p=editId?prospects.find(x=>x.id===editId):null;
@@ -405,17 +483,20 @@ function saveProspect(){
   if(!name||!age){alert('Please enter at least a name and age.');return;}
   const stId=document.getElementById('f-stage').value;
   const checks=CL[stId].map((_,i)=>{const cb=document.getElementById('ck'+i);return cb?cb.checked:false;});
+  const rp=document.getElementById('f-period').value;
+  const rd=document.getElementById('f-review').value;
   if(editId){
     const p=prospects.find(x=>x.id===editId);
     p.name=name;p.age=age;p.nric=document.getElementById('f-nric').value.trim();
     p.status=document.getElementById('f-status').value;p.risk=document.getElementById('f-risk').value;
     p.first=document.getElementById('f-first').value==='1';p.stage=stId;
     p.notes=document.getElementById('f-notes').value.trim();
+    p.reviewPeriod=rp;p.reviewDate=rd;
     if(!p.checks)p.checks={};p.checks[stId]=checks;
     if(!p.files)p.files=[];p.files=[...p.files,...pendingFiles];
   } else {
     const co={};co[stId]=checks;
-    prospects.push({id:nextId++,name,age,nric:document.getElementById('f-nric').value.trim(),status:document.getElementById('f-status').value,risk:document.getElementById('f-risk').value,first:document.getElementById('f-first').value==='1',stage:stId,notes:document.getElementById('f-notes').value.trim(),checks:co,files:[...pendingFiles]});
+    prospects.push({id:nextId++,name,age,nric:document.getElementById('f-nric').value.trim(),status:document.getElementById('f-status').value,risk:document.getElementById('f-risk').value,first:document.getElementById('f-first').value==='1',stage:stId,notes:document.getElementById('f-notes').value.trim(),reviewPeriod:rp,reviewDate:rd,checks:co,files:[...pendingFiles]});
   }
   pendingFiles=[];closeModal();renderBoard();
 }
@@ -424,8 +505,8 @@ function closeModal(){document.getElementById('ov').classList.remove('open');edi
 function ovClick(e){if(e.target.id==='ov')closeModal();}
 function filterCards(){filterTerm=document.getElementById('search-input').value;renderBoard();}
 function exportData(){
-  const rows=[['Name','Age','NRIC','Status','Risk','Stage','First Screener','Files','Notes']];
-  prospects.forEach(p=>{const st=STAGES.find(s=>s.id===p.stage);rows.push([p.name,p.age,p.nric,p.status,p.risk,st?st.label:'',p.first?'Yes':'No',(p.files||[]).length,'"'+(p.notes||'').replace(/"/g,"'")+'"']);});
+  const rows=[['Name','Age','NRIC','Status','Risk','Stage','First Screener','Review Period','Next Review Date','Files','Notes']];
+  prospects.forEach(p=>{const st=STAGES.find(s=>s.id===p.stage);rows.push([p.name,p.age,p.nric,p.status,p.risk,st?st.label:'',p.first?'Yes':'No',PERIOD_LABELS[p.reviewPeriod]||'',p.reviewDate||'',(p.files||[]).length,'"'+(p.notes||'').replace(/"/g,"'")+'"']);});
   const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(rows.map(r=>r.join(',')).join('\n'));a.download='mammobus_pipeline.csv';a.click();
 }
 renderBoard();
