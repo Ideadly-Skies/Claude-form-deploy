@@ -78,11 +78,9 @@
     .left-nav-logo-inner {
       width: 32px;
       height: 64px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      position: relative;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     .left-nav-items {
@@ -112,11 +110,13 @@
       color: white;
     }
 
-    .left-nav-item svg {
+    .left-nav-item img {
       width: 16px;
       height: 16px;
       flex-shrink: 0;
+      display: block;
     }
+
 
     /* ─── CONTENT SHELL ─── */
     .content-shell {
@@ -771,155 +771,78 @@
     <!-- SCS Logo -->
     <div class="left-nav-logo">
       <div class="left-nav-logo-inner">
-        <!-- SCS red caduceus-style logo mark -->
-        <svg width="32" height="56" viewBox="0 0 32 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Caduceus staff -->
-          <rect x="14.5" y="4" width="3" height="40" rx="1.5" fill="#CC2B2B"/>
-          <!-- Wings -->
-          <path d="M16 8 C16 8 6 6 4 12 C2 18 8 20 16 18" stroke="#CC2B2B" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M16 8 C16 8 26 6 28 12 C30 18 24 20 16 18" stroke="#CC2B2B" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- Snake 1 -->
-          <path d="M16 16 C10 19 9 23 13 25 C17 27 18 31 12 33 C8 35 9 39 16 41" stroke="#CC2B2B" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- Snake 2 -->
-          <path d="M16 16 C22 19 23 23 19 25 C15 27 14 31 20 33 C24 35 23 39 16 41" stroke="#CC2B2B" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- SCS text -->
-          <text x="16" y="54" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="8" fill="#CC2B2B" letter-spacing="1">SCS</text>
-        </svg>
+        <img
+          src="scs-logo.png"
+          alt="SCS"
+          style="position:absolute; width:306.25%; height:100%; left:4.33%; top:1.5%; max-width:none; object-fit:cover;"
+        >
       </div>
     </div>
 
     <div class="left-nav-items">
       <!-- 1. Dashboard / Apps -->
       <div class="left-nav-item" title="Dashboard">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="1" y="1" width="5.5" height="5.5" rx="1"/>
-          <rect x="9.5" y="1" width="5.5" height="5.5" rx="1"/>
-          <rect x="1" y="9.5" width="5.5" height="5.5" rx="1"/>
-          <rect x="9.5" y="9.5" width="5.5" height="5.5" rx="1"/>
-        </svg>
+        <img src="icons/icon-1-apps.svg" alt="Dashboard" width="16" height="16">
       </div>
 
       <!-- 2. Treatment -->
       <div class="left-nav-item" title="Treatment">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 8h12M8 2v12"/>
-          <rect x="5" y="5" width="6" height="6" rx="1"/>
-        </svg>
+        <img src="icons/icon-2-treatment.svg" alt="Treatment" width="16" height="16">
       </div>
 
       <!-- 3. Clients / User -->
       <div class="left-nav-item" title="Clients">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="8" cy="5" r="3"/>
-          <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
-        </svg>
+        <img src="icons/icon-3-user.svg" alt="Clients" width="16" height="16">
       </div>
 
       <!-- 4. Doctor -->
       <div class="left-nav-item" title="Doctors">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="8" cy="4.5" r="2.5"/>
-          <path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/>
-          <path d="M11 9.5v2m-1-1h2"/>
-        </svg>
+        <img src="icons/icon-4-doctor.svg" alt="Doctors" width="16" height="16">
       </div>
 
       <!-- 5. Care / Hand Holding Heart -->
       <div class="left-nav-item" title="Care">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8 5.5C8 4.1 6.9 3 5.5 3S3 4.1 3 5.5c0 2 2.5 4 5 5.5 2.5-1.5 5-3.5 5-5.5C13 4.1 11.9 3 10.5 3S8 4.1 8 5.5z"/>
-          <path d="M1 11.5l2-1 2.5.5 4.5-1 2.5.5"/>
-          <path d="M1 11.5v2h14v-2"/>
-        </svg>
+        <img src="icons/icon-5-care.svg" alt="Care" width="16" height="16">
       </div>
 
       <!-- 6. Stethoscope -->
       <div class="left-nav-item" title="Assessments">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 1.5h1a1 1 0 0 1 1 1v4a4 4 0 0 1-8 0v-4a1 1 0 0 1 1-1h1"/>
-          <path d="M6 8a6 6 0 0 0 6 6v0a2 2 0 0 0 2-2v-1.5"/>
-          <circle cx="14" cy="10" r="1.5"/>
-          <line x1="4" y1="1.5" x2="4" y2="3"/>
-          <line x1="6" y1="1.5" x2="6" y2="3"/>
-        </svg>
+        <img src="icons/icon-6-stethoscope.svg" alt="Assessments" width="16" height="16">
       </div>
 
-      <!-- 7. Forms — ACTIVE -->
+      <!-- 7. Forms — ACTIVE (white icon via CSS invert) -->
       <div class="left-nav-item active" title="Forms">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="1" width="12" height="14" rx="1.5"/>
-          <line x1="5" y1="5" x2="11" y2="5"/>
-          <line x1="5" y1="8" x2="11" y2="8"/>
-          <line x1="5" y1="11" x2="8.5" y2="11"/>
-        </svg>
+        <img src="icons/icon-7-form.svg" alt="Forms" width="16" height="16">
       </div>
 
       <!-- 8. Calendar -->
       <div class="left-nav-item" title="Calendar">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="1.5" y="2.5" width="13" height="12" rx="1.5"/>
-          <line x1="11" y1="1" x2="11" y2="4"/>
-          <line x1="5" y1="1" x2="5" y2="4"/>
-          <line x1="1.5" y1="6.5" x2="14.5" y2="6.5"/>
-        </svg>
+        <img src="icons/icon-8-calendar.svg" alt="Calendar" width="16" height="16">
       </div>
 
       <!-- 9. Task / Checklist -->
       <div class="left-nav-item" title="Tasks">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="2,4.5 4,6.5 6.5,3.5"/>
-          <line x1="9" y1="5" x2="14" y2="5"/>
-          <polyline points="2,9.5 4,11.5 6.5,8.5"/>
-          <line x1="9" y1="10" x2="14" y2="10"/>
-          <polyline points="2,13.5 4,15.5 6.5,12.5"/>
-          <line x1="9" y1="14" x2="14" y2="14"/>
-        </svg>
+        <img src="icons/icon-9-checklist.svg" alt="Tasks" width="16" height="16">
       </div>
 
       <!-- 10. Chart / Histogram -->
       <div class="left-nav-item" title="Reports">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="1.5" y="9" width="2.5" height="5" rx="0.5" fill="currentColor" stroke="none"/>
-          <rect x="6" y="6" width="2.5" height="8" rx="0.5" fill="currentColor" stroke="none"/>
-          <rect x="10.5" y="3" width="2.5" height="11" rx="0.5" fill="currentColor" stroke="none"/>
-          <line x1="1" y1="14.5" x2="15" y2="14.5"/>
-        </svg>
+        <img src="icons/icon-10-chart.png" alt="Reports" width="16" height="16">
       </div>
 
       <!-- 11. Calculator -->
       <div class="left-nav-item" title="Calculator">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="1" width="12" height="14" rx="1.5"/>
-          <rect x="4" y="3" width="8" height="3" rx="0.5"/>
-          <circle cx="5" cy="9" r="0.75" fill="currentColor" stroke="none"/>
-          <circle cx="8" cy="9" r="0.75" fill="currentColor" stroke="none"/>
-          <circle cx="11" cy="9" r="0.75" fill="currentColor" stroke="none"/>
-          <circle cx="5" cy="12" r="0.75" fill="currentColor" stroke="none"/>
-          <circle cx="8" cy="12" r="0.75" fill="currentColor" stroke="none"/>
-          <circle cx="11" cy="12" r="0.75" fill="currentColor" stroke="none"/>
-        </svg>
+        <img src="icons/icon-11-calculator.svg" alt="Calculator" width="16" height="16">
       </div>
 
       <!-- 12. Address Book -->
       <div class="left-nav-item" title="Contacts">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="1" width="10" height="14" rx="1.5"/>
-          <line x1="1.5" y1="5" x2="3" y2="5"/>
-          <line x1="1.5" y1="8" x2="3" y2="8"/>
-          <line x1="1.5" y1="11" x2="3" y2="11"/>
-          <line x1="6" y1="6" x2="10" y2="6"/>
-          <circle cx="8" cy="4.5" r="1.5"/>
-          <path d="M5.5 9.5c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5"/>
-        </svg>
+        <img src="icons/icon-12-addressbook.svg" alt="Contacts" width="16" height="16">
       </div>
 
       <!-- 13. Globe / Directory -->
       <div class="left-nav-item" title="Directory">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="8" cy="8" r="6.5"/>
-          <line x1="1.5" y1="8" x2="14.5" y2="8"/>
-          <path d="M8 1.5a10 10 0 0 1 2.5 6.5A10 10 0 0 1 8 14.5a10 10 0 0 1-2.5-6.5A10 10 0 0 1 8 1.5z"/>
-        </svg>
+        <img src="icons/icon-13-globe.svg" alt="Directory" width="16" height="16">
       </div>
     </div>
   </nav>
