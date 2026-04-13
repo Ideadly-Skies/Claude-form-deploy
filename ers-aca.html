@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1557px">
+  <link rel="icon" type="image/png" href="scs-logo.png">
+  <title>ERS-ACA — OneCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-100: #f2eef6;
+      --primary-300: #bda8d0;
+      --primary-500: #7c51a1;
+      --green-500: #375e43;
+      --neutral-0: #ffffff;
+      --neutral-1: #f8f9fa;
+      --neutral-2: #f1f3f5;
+      --neutral-3: #e9ecef;
+      --neutral-4: #ced4da;
+      --neutral-6: #6a7178;
+      --neutral-7: #4f575e;
+      --neutral-9: #272b30;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--neutral-1);
+      color: var(--neutral-9);
+      font-size: 16px;
+      line-height: 24px;
+      min-width: 1557px;
+    }
+
+    a { text-decoration: none; }
+
+    /* ─── LAYOUT SHELL ─── */
+    .page-shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ─── LEFT MAIN NAV ─── */
+    .left-nav {
+      width: 68px;
+      background: var(--primary-100);
+      border-radius: 0 16px 16px 0;
+      box-shadow: 0px 6px 8px 0px rgba(0, 0, 0, 0.10);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 100;
+      padding: 0 8px 16px;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .left-nav-logo {
+      width: 68px;
+      height: 86px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .left-nav-logo-inner {
+      width: 32px;
+      height: 64px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .left-nav-items {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .left-nav-item {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--neutral-7);
+      cursor: pointer;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .left-nav-item:hover:not(.active) { background: rgba(124, 81, 161, 0.12); }
+
+    .left-nav-item.active {
+      background: var(--primary-500);
+      color: white;
+    }
+
+    .left-nav-item img {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .left-nav-item.active img {
+      filter: brightness(0) invert(1);
+    }
+
+    /* ─── CONTENT SHELL ─── */
+    .content-shell {
+      margin-left: 68px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ─── TOPBAR ─── */
+    .topbar {
+      height: 48px;
+      background: var(--neutral-0);
+      border-bottom: 1px solid var(--neutral-3);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 24px;
+      gap: 24px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .topbar-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 100px;
+      background: var(--primary-500);
+      border: 2px solid white;
+      box-shadow: 0 0 4px rgba(0,0,0,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+
+    .topbar-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--neutral-9);
+    }
+
+    .topbar-sep {
+      color: var(--neutral-9);
+      font-size: 16px;
+    }
+
+    .topbar-role {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--primary-500);
+    }
+
+    .topbar-help {
+      border: 1.5px solid var(--primary-500);
+      border-radius: 5px;
+      padding: 6px 16px;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary-500);
+      background: white;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+    }
+
+    .topbar-help:hover { background: var(--primary-100); }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      background: white;
+      border-bottom: 1px solid var(--neutral-3);
+      padding: 16px 24px;
+    }
+
+    .page-header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .page-header-left {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .page-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      padding-top: 4px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .breadcrumb-link {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--primary-500);
+      display: flex;
+      align-items: center;
+    }
+
+    .breadcrumb-current {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--neutral-9);
+    }
+
+    .breadcrumb-sep {
+      display: flex;
+      align-items: center;
+      color: var(--neutral-7);
+    }
+
+    .page-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-btn {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--neutral-9);
+      flex-shrink: 0;
+    }
+
+    .page-title {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 40px;
+      color: var(--neutral-9);
+    }
+
+    /* ─── HEADER ACTION BUTTONS ─── */
+    .btn-draft {
+      height: 36px;
+      padding: 0 16px;
+      border: 1.5px solid var(--neutral-4);
+      border-radius: 5px;
+      background: white;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--neutral-7);
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+    }
+
+    .btn-draft:hover { background: var(--neutral-2); }
+
+    .btn-cancel {
+      height: 36px;
+      padding: 0 16px;
+      border: 1.5px solid var(--neutral-4);
+      border-radius: 5px;
+      background: white;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--neutral-7);
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-cancel:hover { background: var(--neutral-2); }
+
+    .btn-submit {
+      height: 36px;
+      padding: 0 16px;
+      border: none;
+      border-radius: 5px;
+      background: var(--primary-500);
+      font-size: 14px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-submit:hover { background: #6b4590; }
+
+    /* ─── MAIN AREA ─── */
+    .main-area {
+      display: flex;
+      flex: 1;
+      padding: 24px;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    /* ─── TOC SIDEBAR ─── */
+    .toc-sidebar {
+      width: 192px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: sticky;
+      top: calc(48px + 24px);
+    }
+
+    .toc-item {
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--neutral-9);
+      cursor: pointer;
+      display: block;
+      line-height: 24px;
+    }
+
+    .toc-item.active {
+      background: var(--primary-100);
+      border-left: 3px solid var(--primary-300);
+      font-weight: 600;
+      color: var(--primary-500);
+      padding-left: 7px;
+    }
+
+    .toc-item:hover:not(.active) { background: var(--neutral-2); }
+
+    /* ─── CONTENT AREA ─── */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-width: 0;
+    }
+
+    /* ─── RIGHT CLIENT SIDEBAR ─── */
+    .client-sidebar {
+      width: 48px;
+      flex-shrink: 0;
+      background: white;
+      border: 1px solid var(--neutral-3);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 0 12px;
+      gap: 12px;
+      position: sticky;
+      top: calc(48px + 24px);
+      cursor: pointer;
+    }
+
+    .client-sidebar-icon {
+      width: 12px;
+      height: 12px;
+      opacity: 0.6;
+    }
+
+    .client-sidebar-label {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary-500);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .client-sidebar-chevron {
+      opacity: 0.5;
+    }
+
+    /* ─── CARD ─── */
+    .card {
+      background: white;
+      border: 1px solid var(--neutral-3);
+      border-radius: 10px;
+      padding: 16px 24px;
+    }
+
+    /* ─── SECTION HEADER ─── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--neutral-7);
+      letter-spacing: 0.56px;
+      text-transform: uppercase;
+    }
+
+    .section-divider {
+      height: 1px;
+      background: var(--neutral-3);
+      margin-bottom: 16px;
+    }
+
+    /* ─── EDIT LINK ─── */
+    .edit-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--green-500);
+      cursor: pointer;
+    }
+
+    /* ─── PURPOSE OF ASSESSMENT ─── */
+    .purpose-label {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--neutral-7);
+      line-height: 22px;
+      margin-bottom: 4px;
+    }
+
+    .purpose-value {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-9);
+      line-height: 22px;
+    }
+
+    .purpose-edit-icon {
+      cursor: pointer;
+      color: var(--neutral-6);
+      flex-shrink: 0;
+    }
+
+    /* ─── BASIC INFORMATION ─── */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .info-row {
+      display: contents;
+    }
+
+    .info-label {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--neutral-7);
+      line-height: 22px;
+      padding: 4px 8px;
+    }
+
+    .info-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-9);
+      line-height: 22px;
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .info-value.is-link {
+      color: var(--primary-500);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .info-icon {
+      width: 12px;
+      height: 12px;
+      color: var(--neutral-6);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .tag-service {
+      height: 28px;
+      padding: 0 8px;
+      border-radius: 6px;
+      border: 1px solid var(--neutral-3);
+      background: white;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-9);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tag-program {
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 6px;
+      border: 1px solid var(--neutral-3);
+      background: var(--neutral-2);
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-9);
+    }
+
+    .info-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--neutral-3);
+    }
+
+    .latest-record {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--neutral-6);
+      line-height: 20px;
+    }
+
+    /* ─── ASSESSMENT SCALE ─── */
+    .scale-intro {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--neutral-9);
+      line-height: 22px;
+      margin-bottom: 16px;
+    }
+
+    .scale-table {
+      width: 100%;
+      border: 1px solid var(--neutral-3);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .scale-header-row {
+      display: grid;
+      grid-template-columns: 260px repeat(5, 1fr);
+      background: var(--neutral-1);
+      border-bottom: 1px solid var(--neutral-3);
+    }
+
+    .scale-header-cell {
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--neutral-7);
+      text-align: center;
+      border-right: 1px solid var(--neutral-3);
+      line-height: 20px;
+    }
+
+    .scale-header-cell:first-child {
+      text-align: left;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--neutral-7);
+    }
+
+    .scale-header-cell:last-child {
+      border-right: none;
+    }
+
+    .scale-row {
+      display: grid;
+      grid-template-columns: 260px repeat(5, 1fr);
+      border-bottom: 1px solid var(--neutral-3);
+      min-height: 44px;
+    }
+
+    .scale-row:last-child {
+      border-bottom: none;
+    }
+
+    .scale-row:nth-child(even) .scale-label,
+    .scale-row:nth-child(even) .scale-radio-cell {
+      background: var(--neutral-1);
+    }
+
+    .scale-label {
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--neutral-9);
+      line-height: 22px;
+      border-right: 1px solid var(--neutral-3);
+      background: white;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .scale-radio-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--neutral-3);
+      background: white;
+    }
+
+    .scale-radio-cell:last-child {
+      border-right: none;
+    }
+
+    .scale-radio {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid var(--neutral-4);
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+      flex-shrink: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      position: relative;
+    }
+
+    .scale-radio:checked {
+      border-color: var(--primary-500);
+      background: var(--primary-500);
+    }
+
+    .scale-radio:checked::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: white;
+    }
+
+    .scale-radio:hover:not(:checked) {
+      border-color: var(--primary-300);
+    }
+
+    /* Factor rows */
+    .scale-factor-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--neutral-3);
+    }
+
+    .scale-factor-cell {
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--neutral-7);
+      line-height: 20px;
+      border-right: 1px solid var(--neutral-3);
+    }
+
+    .scale-factor-cell:last-child {
+      border-right: none;
+    }
+
+    /* ─── REMARKS ─── */
+    .remarks-label {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--neutral-7);
+      line-height: 22px;
+      margin-bottom: 8px;
+    }
+
+    .remarks-char-count {
+      font-size: 12px;
+      color: var(--neutral-6);
+      text-align: right;
+      margin-bottom: 4px;
+    }
+
+    .remarks-textarea {
+      width: 100%;
+      min-height: 80px;
+      border: 1px solid var(--neutral-3);
+      border-radius: 5px;
+      padding: 10px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--neutral-9);
+      line-height: 22px;
+      resize: vertical;
+      background: white;
+    }
+
+    .remarks-textarea:focus {
+      outline: none;
+      border-color: var(--primary-300);
+    }
+
+    .remarks-textarea::placeholder {
+      color: var(--neutral-4);
+    }
+
+    .remarks-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    /* ─── ASSESSED BY ─── */
+    .assessed-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .assessed-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .assessed-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--neutral-6);
+      letter-spacing: 0.44px;
+      text-transform: uppercase;
+      line-height: 16px;
+    }
+
+    .assessed-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-9);
+      line-height: 22px;
+    }
+
+    /* ─── BOTTOM ACTIONS ─── */
+    .bottom-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 16px 24px;
+      background: white;
+      border-top: 1px solid var(--neutral-3);
+    }
+
+    /* ─── FOOTER ─── */
+    .page-footer {
+      text-align: center;
+      padding: 16px 24px;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--neutral-6);
+      background: var(--neutral-1);
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-shell">
+
+  <!-- ══════════════ LEFT MAIN NAV ══════════════ -->
+  <nav class="left-nav">
+
+    <!-- SCS Logo -->
+    <div class="left-nav-logo">
+      <div class="left-nav-logo-inner">
+        <img src="scs-logo.png" alt="SCS" style="width:32px;height:auto;object-fit:contain;">
+      </div>
+    </div>
+
+    <div class="left-nav-items">
+      <!-- 1. Dashboard / Apps -->
+      <a class="left-nav-item" href="#" title="Dashboard">
+        <img src="icons/icon-1-apps.svg" alt="Dashboard" width="16" height="16">
+      </a>
+
+      <!-- 2. Treatment -->
+      <a class="left-nav-item" href="#" title="Treatment">
+        <img src="icons/icon-2-treatment.svg" alt="Treatment" width="16" height="16">
+      </a>
+
+      <!-- 3. Clients / User -->
+      <a class="left-nav-item" href="#" title="Clients">
+        <img src="icons/icon-3-user.svg" alt="Clients" width="16" height="16">
+      </a>
+
+      <!-- 4. Doctor -->
+      <a class="left-nav-item" href="#" title="Doctors">
+        <img src="icons/icon-4-doctor.svg" alt="Doctors" width="16" height="16">
+      </a>
+
+      <!-- 5. Care — ACTIVE -->
+      <a class="left-nav-item active" href="ers-aca.html" title="Care">
+        <img src="icons/icon-5-care.svg" alt="Care" width="16" height="16">
+      </a>
+
+      <!-- 6. Assessments -->
+      <a class="left-nav-item" href="gad7.html" title="Assessments">
+        <img src="icons/icon-6-stethoscope.svg" alt="Assessments" width="16" height="16">
+      </a>
+
+      <!-- 7. Forms -->
+      <a class="left-nav-item" href="index.html" title="Forms">
+        <img src="icons/icon-7-form.svg" alt="Forms" width="16" height="16">
+      </a>
+
+      <!-- 8. Calendar -->
+      <a class="left-nav-item" href="#" title="Calendar">
+        <img src="icons/icon-8-calendar.svg" alt="Calendar" width="16" height="16">
+      </a>
+
+      <!-- 9. Tasks -->
+      <a class="left-nav-item" href="#" title="Tasks">
+        <img src="icons/icon-9-checklist.svg" alt="Tasks" width="16" height="16">
+      </a>
+
+      <!-- 10. Reports -->
+      <a class="left-nav-item" href="#" title="Reports">
+        <img src="icons/icon-10-chart.svg" alt="Reports" width="16" height="16">
+      </a>
+
+      <!-- 11. Calculator -->
+      <a class="left-nav-item" href="#" title="Calculator">
+        <img src="icons/icon-11-calculator.svg" alt="Calculator" width="16" height="16">
+      </a>
+
+      <!-- 12. Contacts -->
+      <a class="left-nav-item" href="#" title="Contacts">
+        <img src="icons/icon-12-addressbook.svg" alt="Contacts" width="16" height="16">
+      </a>
+
+      <!-- 13. Directory -->
+      <a class="left-nav-item" href="#" title="Directory">
+        <img src="icons/icon-13-globe.svg" alt="Directory" width="16" height="16">
+      </a>
+    </div>
+  </nav>
+
+  <!-- ══════════════ CONTENT SHELL ══════════════ -->
+  <div class="content-shell">
+
+    <!-- ── TOPBAR ── -->
+    <header class="topbar">
+      <div class="topbar-user">
+        <div class="topbar-avatar">SJ</div>
+        <span class="topbar-name">Saphira Jane</span>
+        <span class="topbar-sep">|</span>
+        <span class="topbar-role">Super Admin</span>
+      </div>
+      <button class="topbar-help" type="button">Need Help?</button>
+    </header>
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="page-header">
+      <div class="page-header-top">
+        <div class="page-header-left">
+          <nav class="breadcrumb">
+            <a href="#" class="breadcrumb-link">Home</a>
+            <span class="breadcrumb-sep">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <a href="#" class="breadcrumb-link">Assessment</a>
+            <span class="breadcrumb-sep">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="breadcrumb-current">Emotional Regulation Strategies for Artistic Creative Activities (ERS-ACA)</span>
+          </nav>
+          <div class="page-title-row">
+            <div class="back-btn" title="Go back">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l7-7M5 12l7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h1 class="page-title">Emotional Regulation Strategies for Artistic Creative Activities (ERS-ACA)</h1>
+          </div>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn-draft" type="button">Save As Draft</button>
+          <button class="btn-cancel" type="button">Cancel</button>
+          <button class="btn-submit" type="button">Submit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MAIN AREA ── -->
+    <div class="main-area">
+
+      <!-- TOC Sidebar -->
+      <aside class="toc-sidebar">
+        <a class="toc-item active" href="#purpose">Purpose of Assessment</a>
+        <a class="toc-item" href="#basic-info">Basic Information</a>
+        <a class="toc-item" href="#scale">Assessment Scale</a>
+        <a class="toc-item" href="#remarks">Remarks</a>
+        <a class="toc-item" href="#assessed-by">Assessed By</a>
+      </aside>
+
+      <!-- Content Area -->
+      <main class="content-area">
+
+        <!-- ── PURPOSE OF ASSESSMENT ── -->
+        <section id="purpose" class="card">
+          <div class="section-header">
+            <span class="section-title">Purpose of Assessment</span>
+          </div>
+          <div class="section-divider"></div>
+          <div class="purpose-label">Purpose of Assessment</div>
+          <div class="purpose-value">
+            Regular Assessment
+            <span class="purpose-edit-icon" title="Edit">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M8.5 1.5a1.414 1.414 0 0 1 2 2L3.5 10.5l-3 .5.5-3L8.5 1.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </div>
+        </section>
+
+        <!-- ── BASIC INFORMATION ── -->
+        <section id="basic-info" class="card">
+          <div class="section-header">
+            <span class="section-title">Basic Information</span>
+            <a class="edit-link" href="#" title="Edit in Client Profile">
+              Edit in Client Profile
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M10 2H7.5M10 2v2.5M10 2L6.5 5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 2H2.5A1 1 0 0 0 1.5 3v6.5a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1V7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+          <div class="section-divider"></div>
+
+          <div class="info-grid">
+            <div class="info-label">Client ID</div>
+            <div class="info-value">
+              SCS1235
+              <svg class="info-icon" viewBox="0 0 12 12" fill="none">
+                <rect x="4" y="1" width="7" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M1 4v7a1 1 0 0 0 1 1h7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <div class="info-label">Name</div>
+            <div class="info-value is-link">Lee Wei Xiong</div>
+
+            <div class="info-label">NRIC / FIN No.</div>
+            <div class="info-value">
+              S****507D
+              <svg class="info-icon" viewBox="0 0 12 12" fill="none">
+                <ellipse cx="6" cy="6" rx="5" ry="3.5" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="6" cy="6" r="1.5" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+            </div>
+
+            <div class="info-label">Date of Birth</div>
+            <div class="info-value">10 September 1959 (67 y.o.)</div>
+
+            <div class="info-label">Spoken Language(s)</div>
+            <div class="info-value">English</div>
+
+            <div class="info-label">Service</div>
+            <div class="info-value">
+              <div class="tags-row">
+                <span class="tag-service">Active Rehabilitation
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="tag-service">Psychosocial
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="tag-service">Hospice
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </div>
+
+            <div class="info-label">Program</div>
+            <div class="info-value">
+              <div class="tags-row">
+                <span class="tag-program">RTR</span>
+                <span class="tag-program">RTW</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-footer">
+            <span class="latest-record">Latest record on Fri, 23 Jan 2026 08:30 AM by Dr. Sam Choi</span>
+          </div>
+        </section>
+
+        <!-- ── ASSESSMENT SCALE ── -->
+        <section id="scale" class="card">
+          <div class="section-header">
+            <span class="section-title">Assessment Scale</span>
+          </div>
+          <div class="section-divider"></div>
+
+          <p class="scale-intro">In the last few weeks, I find that…</p>
+
+          <div class="scale-table">
+            <!-- Header -->
+            <div class="scale-header-row">
+              <div class="scale-header-cell">Questions</div>
+              <div class="scale-header-cell">Strongly Disagree<br><span style="font-weight:400;font-size:12px;">(1)</span></div>
+              <div class="scale-header-cell">Disagree<br><span style="font-weight:400;font-size:12px;">(2)</span></div>
+              <div class="scale-header-cell">Neutral<br><span style="font-weight:400;font-size:12px;">(3)</span></div>
+              <div class="scale-header-cell">Agree<br><span style="font-weight:400;font-size:12px;">(4)</span></div>
+              <div class="scale-header-cell" style="border-right:none;">Strongly Agree<br><span style="font-weight:400;font-size:12px;">(5)</span></div>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="scale-row">
+              <div class="scale-label">1. &nbsp;...I can take a break from unwanted thoughts or feelings</div>
+              <div class="scale-radio-cell"><input type="radio" name="q1" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q1" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q1" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q1" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q1" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="scale-row">
+              <div class="scale-label">2. &nbsp;...I can contemplate what is going on in my life with a clear mind</div>
+              <div class="scale-radio-cell"><input type="radio" name="q2" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q2" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q2" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q2" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q2" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="scale-row">
+              <div class="scale-label">3. &nbsp;...I can get some relief from anxieties in my life</div>
+              <div class="scale-radio-cell"><input type="radio" name="q3" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q3" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q3" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q3" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q3" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="scale-row">
+              <div class="scale-label">4. &nbsp;...I feel I am in my own space, away from ordinary worries</div>
+              <div class="scale-radio-cell"><input type="radio" name="q4" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q4" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q4" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q4" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q4" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="scale-row">
+              <div class="scale-label">5. &nbsp;...I feel more confident in myself</div>
+              <div class="scale-radio-cell"><input type="radio" name="q5" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q5" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q5" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q5" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q5" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="scale-row">
+              <div class="scale-label">6. &nbsp;...it boosts my self-esteem</div>
+              <div class="scale-radio-cell"><input type="radio" name="q6" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q6" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q6" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q6" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q6" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="scale-row">
+              <div class="scale-label">7. &nbsp;...it helps me feel a sense of purpose</div>
+              <div class="scale-radio-cell"><input type="radio" name="q7" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q7" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q7" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q7" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q7" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="scale-row">
+              <div class="scale-label">8. &nbsp;...it helps me put my worries aside for the moment</div>
+              <div class="scale-radio-cell"><input type="radio" name="q8" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q8" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q8" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q8" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q8" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="scale-row">
+              <div class="scale-label">9. &nbsp;...it helps me refocus on what matters in my life</div>
+              <div class="scale-radio-cell"><input type="radio" name="q9" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q9" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q9" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q9" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q9" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="scale-row">
+              <div class="scale-label">10. ...it helps me to come to terms with my own emotions</div>
+              <div class="scale-radio-cell"><input type="radio" name="q10" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q10" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q10" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q10" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q10" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="scale-row">
+              <div class="scale-label">11. ...it helps me to step back from things that are bothering me</div>
+              <div class="scale-radio-cell"><input type="radio" name="q11" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q11" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q11" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q11" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q11" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 12 -->
+            <div class="scale-row">
+              <div class="scale-label">12. ...it helps me to put worries or problems I have in perspective</div>
+              <div class="scale-radio-cell"><input type="radio" name="q12" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q12" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q12" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q12" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q12" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 13 -->
+            <div class="scale-row">
+              <div class="scale-label">13. ...it helps me to understand my own feelings on things that are on my mind</div>
+              <div class="scale-radio-cell"><input type="radio" name="q13" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q13" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q13" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q13" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q13" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 14 -->
+            <div class="scale-row">
+              <div class="scale-label">14. ...it helps me feel less absorbed in my negative feelings and thoughts</div>
+              <div class="scale-radio-cell"><input type="radio" name="q14" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q14" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q14" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q14" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q14" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 15 -->
+            <div class="scale-row">
+              <div class="scale-label">15. ...it makes me feel stronger in myself</div>
+              <div class="scale-radio-cell"><input type="radio" name="q15" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q15" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q15" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q15" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q15" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 16 -->
+            <div class="scale-row">
+              <div class="scale-label">16. ...it helps me to reflect on my emotions</div>
+              <div class="scale-radio-cell"><input type="radio" name="q16" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q16" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q16" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q16" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q16" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 17 -->
+            <div class="scale-row">
+              <div class="scale-label">17. ...it reaffirms my identity</div>
+              <div class="scale-radio-cell"><input type="radio" name="q17" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q17" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q17" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q17" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q17" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Question 18 -->
+            <div class="scale-row">
+              <div class="scale-label">18. ...it redirects my attention away from unwanted thoughts and feelings</div>
+              <div class="scale-radio-cell"><input type="radio" name="q18" class="scale-radio" value="1"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q18" class="scale-radio" value="2"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q18" class="scale-radio" value="3"></div>
+              <div class="scale-radio-cell"><input type="radio" name="q18" class="scale-radio" value="4"></div>
+              <div class="scale-radio-cell" style="border-right:none;"><input type="radio" name="q18" class="scale-radio" value="5"></div>
+            </div>
+
+            <!-- Factor Labels Row 1 -->
+            <div class="scale-factor-row">
+              <div class="scale-factor-cell">General Factor</div>
+              <div class="scale-factor-cell">Factor 1 (avoidance strategies)</div>
+            </div>
+
+            <!-- Factor Labels Row 2 -->
+            <div class="scale-factor-row" style="border-top:none;">
+              <div class="scale-factor-cell">Factor 2 (approach strategies)</div>
+              <div class="scale-factor-cell">Factor 3 (self-development strategies)</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── REMARKS ── -->
+        <section id="remarks" class="card">
+          <div class="section-header">
+            <span class="section-title">Remarks</span>
+          </div>
+          <div class="section-divider"></div>
+          <div class="remarks-header-row">
+            <div class="remarks-label">Is there anything else you would like to share?</div>
+            <div class="remarks-char-count" id="charCount">0/256</div>
+          </div>
+          <textarea
+            class="remarks-textarea"
+            id="remarksTextarea"
+            placeholder="Enter"
+            maxlength="256"
+            oninput="document.getElementById('charCount').textContent = this.value.length + '/256'"
+          ></textarea>
+        </section>
+
+        <!-- ── ASSESSED BY ── -->
+        <section id="assessed-by" class="card">
+          <div class="section-header">
+            <span class="section-title">Assessed By</span>
+          </div>
+          <div class="section-divider"></div>
+          <div class="assessed-grid">
+            <div class="assessed-field">
+              <div class="assessed-label">Name</div>
+              <div class="assessed-value">John Chia</div>
+            </div>
+            <div class="assessed-field">
+              <div class="assessed-label">Role</div>
+              <div class="assessed-value">Clinician</div>
+            </div>
+            <div class="assessed-field">
+              <div class="assessed-label">Reg. No.</div>
+              <div class="assessed-value">Reg. No</div>
+            </div>
+            <div class="assessed-field">
+              <div class="assessed-label">Date and Time</div>
+              <div class="assessed-value">11 August 2025, 10:15 AM</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── BOTTOM ACTIONS ── -->
+        <div class="bottom-actions">
+          <button class="btn-draft" type="button">Save As Draft</button>
+          <button class="btn-cancel" type="button">Cancel</button>
+          <button class="btn-submit" type="button">Submit</button>
+        </div>
+
+      </main>
+
+      <!-- Right Client Summary Sidebar -->
+      <aside class="client-sidebar" title="Client Summary">
+        <svg class="client-sidebar-icon" viewBox="0 0 12 12" fill="none">
+          <circle cx="6" cy="4" r="2.5" stroke="#4f575e" stroke-width="1.2"/>
+          <path d="M1.5 11c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5" stroke="#4f575e" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <span class="client-sidebar-label">Client Summary</span>
+        <svg class="client-sidebar-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M4.5 8.5L7.5 5.5L4.5 2.5" stroke="#4f575e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </aside>
+
+    </div><!-- /.main-area -->
+
+    <!-- ── FOOTER ── -->
+    <footer class="page-footer">
+      Copyright © 2025 WERKDONE PTE LTD.
+    </footer>
+
+  </div><!-- /.content-shell -->
+</div><!-- /.page-shell -->
+
+<script>
+  /* TOC scroll highlighting */
+  const sections = document.querySelectorAll('section[id], div[id="assessed-by"]');
+  const tocItems = document.querySelectorAll('.toc-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocItems.forEach(item => item.classList.remove('active'));
+        const active = document.querySelector('.toc-item[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-48px 0px -70% 0px', threshold: 0 });
+
+  document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
