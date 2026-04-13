@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1557px">
+  <link rel="icon" type="image/png" href="scs-logo.png">
+  <title>GAD-7 (General Anxiety Disorder-7) — OneCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-100: #f2eef6;
+      --primary-300: #bda8d0;
+      --primary-500: #7c51a1;
+      --green-500: #375e43;
+      --neutral-0: #ffffff;
+      --neutral-1: #f8f9fa;
+      --neutral-2: #f1f3f5;
+      --neutral-3: #e9ecef;
+      --neutral-4: #ced4da;
+      --neutral-6: #6a7178;
+      --neutral-7: #4f575e;
+      --neutral-9: #272b30;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--neutral-1);
+      color: var(--neutral-9);
+      font-size: 16px;
+      line-height: 24px;
+      min-width: 1557px;
+    }
+
+    a { text-decoration: none; }
+
+    /* ─── LAYOUT SHELL ─── */
+    .page-shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ─── LEFT MAIN NAV ─── */
+    .left-nav {
+      width: 68px;
+      background: var(--primary-100);
+      border-radius: 0 16px 16px 0;
+      box-shadow: 0px 6px 8px 0px rgba(0, 0, 0, 0.10);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 100;
+      padding: 0 8px 16px;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .left-nav-logo {
+      width: 68px;
+      height: 86px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .left-nav-logo-inner {
+      width: 32px;
+      height: 64px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .left-nav-items {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .left-nav-item {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--neutral-7);
+      cursor: pointer;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .left-nav-item:hover:not(.active) { background: rgba(124, 81, 161, 0.12); }
+
+    .left-nav-item.active {
+      background: var(--primary-500);
+      color: white;
+    }
+
+    .left-nav-item img {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .left-nav-item.active img {
+      filter: brightness(0) invert(1);
+    }
+
+    /* ─── CONTENT SHELL ─── */
+    .content-shell {
+      margin-left: 68px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ─── TOPBAR ─── */
+    .topbar {
+      height: 48px;
+      background: var(--neutral-0);
+      border-bottom: 1px solid var(--neutral-3);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 24px;
+      gap: 24px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .topbar-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 100px;
+      background: var(--primary-500);
+      border: 2px solid white;
+      box-shadow: 0 0 4px rgba(0,0,0,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+
+    .topbar-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--neutral-9);
+    }
+
+    .topbar-sep {
+      color: var(--neutral-9);
+      font-size: 16px;
+    }
+
+    .topbar-role {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--primary-500);
+    }
+
+    .topbar-help {
+      border: 1.5px solid var(--primary-500);
+      border-radius: 5px;
+      padding: 6px 16px;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary-500);
+      background: white;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+    }
+
+    .topbar-help:hover { background: var(--primary-100); }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      background: white;
+      border-bottom: 1px solid var(--neutral-3);
+    }
+
+    .page-header-top {
+      padding: 16px 24px 12px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .breadcrumb-link {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--primary-500);
+      display: flex;
+      align-items: center;
+    }
+
+    .breadcrumb-current {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--neutral-9);
+    }
+
+    .breadcrumb-sep {
+      display: flex;
+      align-items: center;
+      color: var(--neutral-7);
+    }
+
+    .page-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-btn {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--neutral-9);
+      flex-shrink: 0;
+    }
+
+    .page-title {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 40px;
+      color: var(--neutral-9);
+    }
+
+    /* ─── CLIENT INFO BAR ─── */
+    .client-info-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-top: 1px solid var(--neutral-3);
+      padding: 12px 24px;
+    }
+
+    .client-info-field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-right: 32px;
+    }
+
+    .client-info-field:not(:last-child) {
+      border-right: 1px solid var(--neutral-3);
+      margin-right: 32px;
+    }
+
+    .client-info-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--neutral-6);
+      letter-spacing: 0.44px;
+      text-transform: uppercase;
+      line-height: 16px;
+    }
+
+    .client-info-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--neutral-9);
+      line-height: 22px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .client-info-value.is-link {
+      color: var(--primary-500);
+      cursor: pointer;
+    }
+
+    .client-info-icon {
+      color: var(--neutral-6);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ─── MAIN AREA ─── */
+    .main-area {
+      display: flex;
+      flex: 1;
+      padding: 24px;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    /* ─── TABLE CONTENT AREA ─── */
+    .table-content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    /* ─── TABLE CONTROLS (Pagination + Buttons) ─── */
+    .table-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .table-pagination {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pagination-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-7);
+    }
+
+    .pagination-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--neutral-3);
+      border-radius: 5px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--neutral-7);
+    }
+
+    .pagination-btn:hover { background: var(--neutral-2); }
+
+    .table-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-filter {
+      height: 36px;
+      padding: 0 16px;
+      border: 1.5px solid var(--neutral-4);
+      border-radius: 5px;
+      background: white;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--neutral-7);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-filter:hover { background: var(--neutral-2); }
+
+    .btn-add-assessment {
+      height: 36px;
+      padding: 0 16px;
+      border: none;
+      border-radius: 5px;
+      background: var(--primary-500);
+      font-size: 14px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-add-assessment:hover { background: #6b4590; }
+
+    /* ─── COMPARISON TABLE ─── */
+    .comparison-table {
+      width: 100%;
+      border: 1px solid var(--neutral-3);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* Each row uses grid: 280px label + 4 equal date columns */
+    .ct-row {
+      display: grid;
+      grid-template-columns: 280px repeat(4, 1fr);
+      border-bottom: 1px solid var(--neutral-3);
+    }
+
+    .ct-row:last-child {
+      border-bottom: none;
+    }
+
+    /* Purple section header spans all columns */
+    .ct-section-header {
+      grid-column: 1 / -1;
+      background: var(--primary-500);
+      color: white;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Label cell (left column) */
+    .ct-label {
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-9);
+      background: white;
+      border-right: 1px solid var(--neutral-3);
+      display: flex;
+      align-items: center;
+    }
+
+    /* Data cells (right columns) */
+    .ct-cell {
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--neutral-9);
+      text-align: center;
+      background: white;
+      border-right: 1px solid var(--neutral-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ct-cell:last-child {
+      border-right: none;
+    }
+
+    /* Alternating row backgrounds for the detail rows */
+    .ct-row.row-alt .ct-label,
+    .ct-row.row-alt .ct-cell {
+      background: var(--neutral-1);
+    }
+
+    /* Date cell styling */
+    .ct-date {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-9);
+      text-align: center;
+      line-height: 22px;
+    }
+
+    .ct-date-sub {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--neutral-6);
+    }
+
+    /* Status badge */
+    .status-submitted {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-9);
+      justify-content: center;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2d9e5f;
+      flex-shrink: 0;
+    }
+
+    /* Icon action buttons in table */
+    .ct-icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--neutral-6);
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ct-icon-btn:hover { color: var(--primary-500); background: var(--primary-100); }
+
+    .ct-icon-btn.delete:hover { color: #e03131; background: #fff5f5; }
+
+    /* Interpretation text */
+    .interpretation-text {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--neutral-9);
+      text-align: center;
+      line-height: 20px;
+    }
+
+    /* ─── RIGHT CLIENT SIDEBAR ─── */
+    .client-sidebar {
+      width: 48px;
+      flex-shrink: 0;
+      background: white;
+      border: 1px solid var(--neutral-3);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 0 12px;
+      gap: 12px;
+      position: sticky;
+      top: calc(48px + 24px);
+      cursor: pointer;
+    }
+
+    .client-sidebar-label {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary-500);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      height: 40px;
+      background: var(--neutral-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-7);
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+<div class="page-shell">
+
+  <!-- ══════════════ LEFT MAIN NAV ══════════════ -->
+  <nav class="left-nav">
+
+    <!-- SCS Logo -->
+    <div class="left-nav-logo">
+      <div class="left-nav-logo-inner">
+        <img
+          src="scs-logo.png"
+          alt="SCS"
+          style="position:absolute; width:306.25%; height:100%; left:4.33%; top:1.5%; max-width:none; object-fit:cover;"
+        >
+      </div>
+    </div>
+
+    <div class="left-nav-items">
+      <!-- 1. Dashboard / Apps -->
+      <a class="left-nav-item" href="#" title="Dashboard">
+        <img src="icons/icon-1-apps.svg" alt="Dashboard" width="16" height="16">
+      </a>
+
+      <!-- 2. Treatment -->
+      <a class="left-nav-item" href="#" title="Treatment">
+        <img src="icons/icon-2-treatment.svg" alt="Treatment" width="16" height="16">
+      </a>
+
+      <!-- 3. Clients / User -->
+      <a class="left-nav-item" href="#" title="Clients">
+        <img src="icons/icon-3-user.svg" alt="Clients" width="16" height="16">
+      </a>
+
+      <!-- 4. Doctor -->
+      <a class="left-nav-item" href="#" title="Doctors">
+        <img src="icons/icon-4-doctor.svg" alt="Doctors" width="16" height="16">
+      </a>
+
+      <!-- 5. Care -->
+      <a class="left-nav-item" href="#" title="Care">
+        <img src="icons/icon-5-care.svg" alt="Care" width="16" height="16">
+      </a>
+
+      <!-- 6. Assessments — ACTIVE -->
+      <a class="left-nav-item active" href="gad7.html" title="Assessments">
+        <img src="icons/icon-6-stethoscope.svg" alt="Assessments" width="16" height="16">
+      </a>
+
+      <!-- 7. Forms -->
+      <a class="left-nav-item" href="index.html" title="Forms">
+        <img src="icons/icon-7-form.svg" alt="Forms" width="16" height="16">
+      </a>
+
+      <!-- 8. Calendar -->
+      <a class="left-nav-item" href="#" title="Calendar">
+        <img src="icons/icon-8-calendar.svg" alt="Calendar" width="16" height="16">
+      </a>
+
+      <!-- 9. Tasks -->
+      <a class="left-nav-item" href="#" title="Tasks">
+        <img src="icons/icon-9-checklist.svg" alt="Tasks" width="16" height="16">
+      </a>
+
+      <!-- 10. Reports -->
+      <a class="left-nav-item" href="#" title="Reports">
+        <img src="icons/icon-10-chart.svg" alt="Reports" width="16" height="16">
+      </a>
+
+      <!-- 11. Calculator -->
+      <a class="left-nav-item" href="#" title="Calculator">
+        <img src="icons/icon-11-calculator.svg" alt="Calculator" width="16" height="16">
+      </a>
+
+      <!-- 12. Contacts -->
+      <a class="left-nav-item" href="#" title="Contacts">
+        <img src="icons/icon-12-addressbook.svg" alt="Contacts" width="16" height="16">
+      </a>
+
+      <!-- 13. Directory -->
+      <a class="left-nav-item" href="#" title="Directory">
+        <img src="icons/icon-13-globe.svg" alt="Directory" width="16" height="16">
+      </a>
+    </div>
+  </nav>
+
+  <!-- ══════════════ CONTENT SHELL ══════════════ -->
+  <div class="content-shell">
+
+    <!-- ── TOPBAR ── -->
+    <header class="topbar">
+      <div class="topbar-user">
+        <div class="topbar-avatar">SJ</div>
+        <span class="topbar-name">Saphira Jane</span>
+        <span class="topbar-sep">|</span>
+        <span class="topbar-role">Super Admin</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6a7178" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <button class="topbar-help">Need Help?</button>
+    </header>
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="page-header">
+      <div class="page-header-top">
+        <nav class="breadcrumb">
+          <a href="#" class="breadcrumb-link">Home</a>
+          <span class="breadcrumb-sep">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+          <a href="#" class="breadcrumb-link">Assessment</a>
+          <span class="breadcrumb-sep">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+          <span class="breadcrumb-current">GAD-7 (General Anxiety Disorder-7)</span>
+        </nav>
+        <div class="page-title-row">
+          <div class="back-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </div>
+          <h1 class="page-title">GAD-7 (General Anxiety Disorder-7)</h1>
+        </div>
+      </div>
+
+      <!-- Client Info Bar -->
+      <div class="client-info-bar">
+        <div class="client-info-field">
+          <span class="client-info-label">Client ID</span>
+          <div class="client-info-value">
+            SCS1235
+            <svg class="client-info-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+          </div>
+        </div>
+        <div class="client-info-field">
+          <span class="client-info-label">Client Name</span>
+          <div class="client-info-value is-link">Lee Wei Xiong</div>
+        </div>
+        <div class="client-info-field">
+          <span class="client-info-label">NRIC / FIN No.</span>
+          <div class="client-info-value">
+            S****567D
+            <svg class="client-info-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </div>
+        </div>
+        <div class="client-info-field">
+          <span class="client-info-label">Date of Birth</span>
+          <div class="client-info-value">10 September 1959 (67 y.o.)</div>
+        </div>
+        <div class="client-info-field" style="border-right:none; margin-right:0; padding-right:0;">
+          <span class="client-info-label">Spoken Language(s)</span>
+          <div class="client-info-value">English</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MAIN AREA ── -->
+    <div class="main-area">
+
+      <!-- Table + Controls -->
+      <div class="table-content-area">
+
+        <!-- Pagination / Filter Row -->
+        <div class="table-controls">
+          <div class="table-pagination">
+            <span class="pagination-text">1 to 4 of 10 records</span>
+            <button class="pagination-btn" aria-label="Previous page">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="pagination-btn" aria-label="Next page">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+          <div class="table-actions">
+            <button class="btn-filter">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="6" x2="20" y2="6"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
+                <line x1="11" y1="18" x2="13" y2="18"/>
+              </svg>
+              Filter
+            </button>
+            <button class="btn-add-assessment">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Assessment
+            </button>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             COMPARISON TABLE
+             Columns: [Label 280px] [Date1] [Date2] [Date3] [Date4]
+             ════════════════════════════════════════════ -->
+        <div class="comparison-table">
+
+          <!-- ── SECTION: Assessment Details ── -->
+          <div class="ct-row">
+            <div class="ct-section-header">Assessment Details</div>
+          </div>
+
+          <!-- Date -->
+          <div class="ct-row">
+            <div class="ct-label">Date</div>
+            <div class="ct-cell">
+              <div class="ct-date">
+                Tue, 31 Jan 2026<br>
+                <span class="ct-date-sub">11:02 AM</span>
+              </div>
+            </div>
+            <div class="ct-cell">
+              <div class="ct-date">
+                Tue, 17 Jan 2026<br>
+                <span class="ct-date-sub">11:02 AM</span>
+              </div>
+            </div>
+            <div class="ct-cell">
+              <div class="ct-date">
+                Tue, 3 Jan 2026<br>
+                <span class="ct-date-sub">11:02 AM</span>
+              </div>
+            </div>
+            <div class="ct-cell">
+              <div class="ct-date">
+                Tue, 20 Dec 2025<br>
+                <span class="ct-date-sub">11:02 AM</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Purpose of Assessment -->
+          <div class="ct-row row-alt">
+            <div class="ct-label">Purpose of Assessment</div>
+            <div class="ct-cell">Regular</div>
+            <div class="ct-cell">Regular</div>
+            <div class="ct-cell">Regular</div>
+            <div class="ct-cell">Regular</div>
+          </div>
+
+          <!-- Status -->
+          <div class="ct-row">
+            <div class="ct-label">Status</div>
+            <div class="ct-cell">
+              <span class="status-submitted"><span class="status-dot"></span>Submitted</span>
+            </div>
+            <div class="ct-cell">
+              <span class="status-submitted"><span class="status-dot"></span>Submitted</span>
+            </div>
+            <div class="ct-cell">
+              <span class="status-submitted"><span class="status-dot"></span>Submitted</span>
+            </div>
+            <div class="ct-cell">
+              <span class="status-submitted"><span class="status-dot"></span>Submitted</span>
+            </div>
+          </div>
+
+          <!-- ── SECTION: Details ── -->
+          <div class="ct-row">
+            <div class="ct-section-header">
+              Details
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8;">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Q1: Feeling nervous -->
+          <div class="ct-row row-alt">
+            <div class="ct-label">Feeling nervous, anxious or on edge</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+          </div>
+
+          <!-- Q2: Not being able to stop -->
+          <div class="ct-row">
+            <div class="ct-label">Not being able to stop or control worrying</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+          </div>
+
+          <!-- Q3: Worrying too much -->
+          <div class="ct-row row-alt">
+            <div class="ct-label">Worrying too much about different things</div>
+            <div class="ct-cell">3</div>
+            <div class="ct-cell">3</div>
+            <div class="ct-cell">3</div>
+            <div class="ct-cell">3</div>
+          </div>
+
+          <!-- Q4: Trouble relaxing -->
+          <div class="ct-row">
+            <div class="ct-label">Trouble relaxing</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+          </div>
+
+          <!-- Q5: Being so restless -->
+          <div class="ct-row row-alt">
+            <div class="ct-label">Being so restless that it is hard to sit still</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+          </div>
+
+          <!-- Q6: Becoming easily annoyed -->
+          <div class="ct-row">
+            <div class="ct-label">Becoming easily annoyed or irritable</div>
+            <div class="ct-cell">3</div>
+            <div class="ct-cell">3</div>
+            <div class="ct-cell">3</div>
+            <div class="ct-cell">3</div>
+          </div>
+
+          <!-- Q7: Feeling afraid -->
+          <div class="ct-row row-alt">
+            <div class="ct-label">Feeling afraid as if something awful might happen</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+            <div class="ct-cell">1</div>
+          </div>
+
+          <!-- ── SECTION: Result ── -->
+          <div class="ct-row">
+            <div class="ct-section-header">Result</div>
+          </div>
+
+          <!-- Total Score -->
+          <div class="ct-row">
+            <div class="ct-label">Total Score</div>
+            <div class="ct-cell" style="font-weight:600;">11</div>
+            <div class="ct-cell" style="font-weight:600;">11</div>
+            <div class="ct-cell" style="font-weight:600;">11</div>
+            <div class="ct-cell" style="font-weight:600;">11</div>
+          </div>
+
+          <!-- Interpretation -->
+          <div class="ct-row row-alt">
+            <div class="ct-label">Interpretation</div>
+            <div class="ct-cell"><span class="interpretation-text">Moderate Anxiety Disorder</span></div>
+            <div class="ct-cell"><span class="interpretation-text">Moderate Anxiety Disorder</span></div>
+            <div class="ct-cell"><span class="interpretation-text">Moderate Anxiety Disorder</span></div>
+            <div class="ct-cell"><span class="interpretation-text">Moderate Anxiety Disorder</span></div>
+          </div>
+
+          <!-- ── SECTION: Assessed By ── -->
+          <div class="ct-row">
+            <div class="ct-section-header">
+              Assessed By
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.8;">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Assessed By name -->
+          <div class="ct-row">
+            <div class="ct-label">Assessed By</div>
+            <div class="ct-cell">Saphira Jane</div>
+            <div class="ct-cell">Saphira Jane</div>
+            <div class="ct-cell">Saphira Jane</div>
+            <div class="ct-cell">Saphira Jane</div>
+          </div>
+
+          <!-- Edit action row -->
+          <div class="ct-row row-alt">
+            <div class="ct-label" style="color:var(--neutral-6); font-size:13px;"></div>
+            <div class="ct-cell">
+              <button class="ct-icon-btn" aria-label="Edit assessment">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="ct-cell">
+              <button class="ct-icon-btn" aria-label="Edit assessment">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="ct-cell">
+              <button class="ct-icon-btn" aria-label="Edit assessment">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="ct-cell">
+              <button class="ct-icon-btn" aria-label="Edit assessment">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Delete action row -->
+          <div class="ct-row">
+            <div class="ct-label"></div>
+            <div class="ct-cell">
+              <button class="ct-icon-btn delete" aria-label="Delete assessment">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                  <path d="M10 11v6"/>
+                  <path d="M14 11v6"/>
+                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                </svg>
+              </button>
+            </div>
+            <div class="ct-cell">
+              <button class="ct-icon-btn delete" aria-label="Delete assessment">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                  <path d="M10 11v6"/>
+                  <path d="M14 11v6"/>
+                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                </svg>
+              </button>
+            </div>
+            <div class="ct-cell">
+              <button class="ct-icon-btn delete" aria-label="Delete assessment">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                  <path d="M10 11v6"/>
+                  <path d="M14 11v6"/>
+                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                </svg>
+              </button>
+            </div>
+            <div class="ct-cell">
+              <button class="ct-icon-btn delete" aria-label="Delete assessment">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                  <path d="M10 11v6"/>
+                  <path d="M14 11v6"/>
+                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+        </div><!-- end comparison-table -->
+
+      </div><!-- end table-content-area -->
+
+      <!-- ── RIGHT CLIENT SUMMARY SIDEBAR ── -->
+      <div class="client-sidebar">
+        <div class="client-sidebar-label">Client Summary</div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c51a1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="11 17 6 12 11 7"/>
+          <polyline points="18 17 13 12 18 7"/>
+        </svg>
+      </div>
+
+    </div><!-- end main-area -->
+
+    <!-- ── FOOTER ── -->
+    <footer class="footer">Copyright © 2025 WERKDONE PTE LTD.</footer>
+
+  </div><!-- end content-shell -->
+</div><!-- end page-shell -->
+</body>
+</html>
