@@ -102,6 +102,7 @@
       color: var(--neutral-7);
       cursor: pointer;
       flex-shrink: 0;
+      text-decoration: none;
     }
 
     .left-nav-item:hover:not(.active) { background: rgba(124, 81, 161, 0.12); }
@@ -109,6 +110,10 @@
     .left-nav-item.active {
       background: var(--primary-500);
       color: white;
+    }
+
+    .left-nav-item.active img {
+      filter: brightness(0) invert(1);
     }
 
     .left-nav-item img {
@@ -782,69 +787,69 @@
 
     <div class="left-nav-items">
       <!-- 1. Dashboard / Apps -->
-      <div class="left-nav-item" title="Dashboard">
+      <a class="left-nav-item" href="#" title="Dashboard">
         <img src="icons/icon-1-apps.svg" alt="Dashboard" width="16" height="16">
-      </div>
+      </a>
 
       <!-- 2. Treatment -->
-      <div class="left-nav-item" title="Treatment">
+      <a class="left-nav-item" href="#" title="Treatment">
         <img src="icons/icon-2-treatment.svg" alt="Treatment" width="16" height="16">
-      </div>
+      </a>
 
       <!-- 3. Clients / User -->
-      <div class="left-nav-item" title="Clients">
+      <a class="left-nav-item" href="#" title="Clients">
         <img src="icons/icon-3-user.svg" alt="Clients" width="16" height="16">
-      </div>
+      </a>
 
       <!-- 4. Doctor -->
-      <div class="left-nav-item" title="Doctors">
+      <a class="left-nav-item" href="#" title="Doctors">
         <img src="icons/icon-4-doctor.svg" alt="Doctors" width="16" height="16">
-      </div>
+      </a>
 
       <!-- 5. Care / Hand Holding Heart -->
-      <div class="left-nav-item" title="Care">
+      <a class="left-nav-item" href="#" title="Care">
         <img src="icons/icon-5-care.svg" alt="Care" width="16" height="16">
-      </div>
+      </a>
 
-      <!-- 6. Stethoscope -->
-      <div class="left-nav-item" title="Assessments">
+      <!-- 6. Assessments -->
+      <a class="left-nav-item" href="gad7.html" title="Assessments">
         <img src="icons/icon-6-stethoscope.svg" alt="Assessments" width="16" height="16">
-      </div>
+      </a>
 
-      <!-- 7. Forms — ACTIVE (white icon via CSS invert) -->
-      <div class="left-nav-item active" title="Forms">
+      <!-- 7. Forms — ACTIVE -->
+      <a class="left-nav-item active" href="index.html" title="Forms">
         <img src="icons/icon-7-form.svg" alt="Forms" width="16" height="16">
-      </div>
+      </a>
 
       <!-- 8. Calendar -->
-      <div class="left-nav-item" title="Calendar">
+      <a class="left-nav-item" href="#" title="Calendar">
         <img src="icons/icon-8-calendar.svg" alt="Calendar" width="16" height="16">
-      </div>
+      </a>
 
       <!-- 9. Task / Checklist -->
-      <div class="left-nav-item" title="Tasks">
+      <a class="left-nav-item" href="#" title="Tasks">
         <img src="icons/icon-9-checklist.svg" alt="Tasks" width="16" height="16">
-      </div>
+      </a>
 
       <!-- 10. Chart / Histogram -->
-      <div class="left-nav-item" title="Reports">
-        <img src="icons/icon-10-chart.png" alt="Reports" width="16" height="16">
-      </div>
+      <a class="left-nav-item" href="#" title="Reports">
+        <img src="icons/icon-10-chart.svg" alt="Reports" width="16" height="16">
+      </a>
 
       <!-- 11. Calculator -->
-      <div class="left-nav-item" title="Calculator">
+      <a class="left-nav-item" href="#" title="Calculator">
         <img src="icons/icon-11-calculator.svg" alt="Calculator" width="16" height="16">
-      </div>
+      </a>
 
       <!-- 12. Address Book -->
-      <div class="left-nav-item" title="Contacts">
+      <a class="left-nav-item" href="#" title="Contacts">
         <img src="icons/icon-12-addressbook.svg" alt="Contacts" width="16" height="16">
-      </div>
+      </a>
 
       <!-- 13. Globe / Directory -->
-      <div class="left-nav-item" title="Directory">
+      <a class="left-nav-item" href="#" title="Directory">
         <img src="icons/icon-13-globe.svg" alt="Directory" width="16" height="16">
-      </div>
+      </a>
     </div>
   </nav>
 
